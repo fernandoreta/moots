@@ -49,13 +49,14 @@
         <h1>Hello, {{ title }}</h1>
         <p>Congratulations! Your app is running. 🎉</p>
         <div class="example-button-row">
-          <button (click)="login()" mat-raised-button color="primary">
+          <button (click)="login()" mat-flat-button color="primary">
             Login
           </button>
-          <button (click)="logout()" mat-raised-button color="warn">
+          <button (click)="logout()" mat-raised-button [disabled]="!currentUser" color="warn">
             Cerrar Sesión
           </button>
         </div>
+        <p *ngIf="currentUser">Bienvenido {{ currentUser.email }}!</p>
       </div>
       <div class="divider" role="separator" aria-label="Divider"></div>
       <div class="right-side">
