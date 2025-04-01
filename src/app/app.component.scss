@@ -1,0 +1,44 @@
+::ng-deep {
+    .mat-mdc-tab-body-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 95vh;
+      }
+}
+  
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 56px; // igual al alto del mat-tab-group
+  }  
+  .bottom-tab-group {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: white;
+    z-index: 100;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  }  
+  
+  .bottom-tabs {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-radius: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-around;
+  
+    a {
+      flex-direction: column;
+      font-size: 12px;
+      color: white;
+      text-align: center;
+      padding: 0.5rem 0;
+    }
+  
+    mat-icon {
+      font-size: 20px;
+    }
+  }
+  
