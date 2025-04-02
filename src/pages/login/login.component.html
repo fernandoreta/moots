@@ -46,7 +46,7 @@
             <clipPath id="a"><path fill="#fff" d="M0 0h982v239H0z" /></clipPath>
           </defs>
         </svg>
-        <h1>Hello<span>, {{ data.currentUser.displayName }}</span></h1>
+        <h1>Hello<span>, {{ data?.currentUser?.displayName }}</span></h1>
         <p *ngIf="data.currentUser">Felicitaciones! Tienes iniciada sesión. 🎉</p>
         <p *ngIf="!data.currentUser">Inicia sesión para obtener recompensas. 🎉</p>
       </div>

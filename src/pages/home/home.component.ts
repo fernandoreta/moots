@@ -1,10 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { User } from 'firebase/auth';
 import { CommonModule } from '@angular/common';
-import { IUSerData } from '../../interfaces/user.interface';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -23,4 +22,11 @@ export class HomeComponent {
 
   @Input() currentUser!: any;
   @Input() userData!: any;
+  private userService = inject(UserService)
+  
+
+  async modifyStar(star: number) {
+    await this.userService.addPoints(this.currentUser , star);
+    this.userData = await this.userService.getUserData(this.currentUser);
+  }
 }

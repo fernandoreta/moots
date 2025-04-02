@@ -51,8 +51,8 @@ export class UserService {
     if (snap.exists()) {
       const current = snap.data()['points'] ?? 0;
       await updateDoc(userRef, { points: current + amount });
-      this.loadingService.hide();
     }
+    this.loadingService.hide();
   }
 
   async updateUser(user: User, data: any): Promise<void> {

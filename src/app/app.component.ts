@@ -36,12 +36,10 @@ export interface DialogData {
 export class AppComponent implements OnInit {
   title = 'moots';
   showTabs = true;
-  readonly animal = signal('');
-  readonly name = model('');
   readonly dialog = inject(MatDialog);
   currentUser!: User;
   private auth = inject(Auth);
-  private firestore = inject(Firestore);
+
   userData!: IUSerData;
   loading$ = inject(LoadingService).loading$;
   constructor(
@@ -61,10 +59,12 @@ export class AppComponent implements OnInit {
       data: { currentUser: this.currentUser },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: User) => {
       console.log('The dialog was closed');
       if (result !== undefined) {
-        this.animal.set(result);
+        this.currentUser = result;
+      } else {
+        this.currentUser = undefined as any;
       }
     });
   }

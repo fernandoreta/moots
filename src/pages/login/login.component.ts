@@ -64,8 +64,8 @@ export class LoginComponent implements OnInit {
     const { email, password } = this.loginForm.value;
   
     signInWithEmailAndPassword(this.auth, email, password)
-      .then(async () => {
-          this.dialogRef.close();
+      .then(async (cred) => {
+          this.dialogRef.close(cred.user);
           this.router.navigateByUrl('');
       })
       .catch((error) => {
@@ -77,7 +77,9 @@ export class LoginComponent implements OnInit {
     signOut(this.auth)
       .then(() => {
         this.data.currentUser = undefined as any;
+        this.dialogRef.close(this.data.currentUser);
         console.log('👋 Sesión cerrada');
+        this.router.navigateByUrl('');
       })
       .catch((error) => {
         console.error('❌ Error al cerrar sesión:', error.message);
@@ -91,7 +93,7 @@ export class LoginComponent implements OnInit {
     .then(async (cred) => {
       await this.userService.createUserDocument(cred.user);
       await updateProfile(cred.user, { displayName: name });
-      this.dialogRef.close();
+      this.dialogRef.close(cred.user);
       this.router.navigateByUrl('');
       console.log('✅ Registro exitoso:', email);
     })
