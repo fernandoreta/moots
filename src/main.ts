@@ -6,6 +6,9 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { loadingInterceptor } from './services/loading.interceptor';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyK-uH4edU0GLDxBw8556AFeYXCJTyojo",
@@ -23,6 +26,10 @@ bootstrapApplication(AppComponent, {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideHttpClient(
+      withInterceptors([loadingInterceptor])
+    ),
   ]
 }).catch((err) => console.error(err));

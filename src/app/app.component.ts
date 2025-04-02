@@ -2,24 +2,19 @@ import { Component, inject, model, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { HomeComponent } from '../pages/home/home.component';
 import { MatButtonModule } from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
-import {FormsModule} from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { Firestore, collection, doc, setDoc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { LoginComponent } from '../pages/login/login.component';
 import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
+import { IUSerData } from '../interfaces/user.interface';
+import { UserService } from '../services/user.service';
+import { LoadingService } from '../services/loading.service';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 export interface DialogData {
   animal: string;
   name: string;
@@ -31,7 +26,9 @@ export interface DialogData {
     MatTabsModule,
     HomeComponent,
     MatButtonModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    CommonModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -44,8 +41,13 @@ export class AppComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   currentUser!: User;
   private auth = inject(Auth);
-
-  constructor(private router: Router) {
+  private firestore = inject(Firestore);
+  userData!: IUSerData;
+  loading$ = inject(LoadingService).loading$;
+  constructor(
+    private router: Router,
+    private userService: UserService
+  ) {
     this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
       .subscribe(event => {
@@ -67,15 +69,26 @@ export class AppComponent implements OnInit {
     });
   }
 
+ private authInitialized = false;
+
   ngOnInit(): void {
-    onAuthStateChanged(this.auth, user => {
+    if (this.authInitialized) return;
+    this.authInitialized = true;
+
+    onAuthStateChanged(this.auth, async user => {
       if (user) {
         this.currentUser = user;
         console.log('🙋 Usuario activo:', user.email);
+
+        this.userData = await this.userService.getUserData(user);
+        if (this.userData) {
+          console.log('⭐ Puntos del usuario:', this.userData.points);
+        } else {
+          console.warn('⚠️ No se encontró documento del usuario en Firestore');
+        }
       } else {
         console.log('🚫 No hay sesión activa');
       }
     });
   }
-
 }

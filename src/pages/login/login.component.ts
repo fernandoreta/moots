@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,10 @@ export class LoginComponent implements OnInit {
   hidePassword = true;
   error = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService
+  ) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -60,15 +64,11 @@ export class LoginComponent implements OnInit {
     const { email, password } = this.loginForm.value;
   
     signInWithEmailAndPassword(this.auth, email, password)
-      .then((res) => {
-        const user = res.user;
-        this.data.currentUser = user;
-        this.error = false;
-        this.dialogRef.close();
-        console.log('✅ Sesión iniciada:', user.email);
+      .then(async () => {
+          this.dialogRef.close();
+          this.router.navigateByUrl('');
       })
       .catch((error) => {
-        this.error = true;
         console.error('❌ Error al iniciar sesión:', error.message);
       });
   }
@@ -87,14 +87,17 @@ export class LoginComponent implements OnInit {
   async register() {
     const { name, email, password } = this.registerForm.value;
 
-    try {
-      const cred = await createUserWithEmailAndPassword(this.auth, email, password);
+    createUserWithEmailAndPassword(this.auth, email, password)
+    .then(async (cred) => {
+      await this.userService.createUserDocument(cred.user);
       await updateProfile(cred.user, { displayName: name });
-      console.log('✅ Usuario registrado:', cred.user);
       this.dialogRef.close();
-    } catch (err) {
-      console.error('❌ Error al registrar:', err);
-    }
+      this.router.navigateByUrl('');
+      console.log('✅ Registro exitoso:', email);
+    })
+    .catch((error) => {
+      console.error('❌ Error al registrar:', error.message);
+    });
   }
 
   ngOnInit(): void {
