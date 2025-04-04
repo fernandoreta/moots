@@ -1,19 +1,32 @@
 <div class="container">
   <div class="points-card mat-elevation-z2">
     <ng-container *ngIf="currentUser && userData; else noUser">
-      <p>Hola {{ currentUser.displayName }} Tienes</p>
+      <!-- Current comment points -->
+      <!-- <p>Hola {{ currentUser.displayName }} Tienes</p>
       <h2>{{ userData.points }}</h2>
       <p>Puntos</p>
       <mat-progress-bar [value]="(userData.points / maxPoints) * 100" color="accent"></mat-progress-bar>
-      <small>{{ maxPoints - userData.points }} puntos más para una bebida gratis</small>
+      <small>{{ maxPoints - userData.points }} puntos más para una bebida gratis</small> -->
+      
+      <!-- Stamps -->
+      <h3>🤩 STAMPS</h3>
+      <div class="progress-grid">
+        <button mat-icon-button *ngFor="let stamp of stamps" [ngClass]="{
+          'active': stamp.active,
+          'gift': stamp.icon === 'card_giftcard'
+        }">
+          <mat-icon *ngIf="stamp.icon">{{ stamp.icon }}</mat-icon>
+          <span *ngIf="!stamp.icon">{{ stamp.number }}</span>
+        </button>
+      </div>
+      <p>🌟 Obten un STAMP en cada visita!</p>
     </ng-container>
   
     <ng-template #noUser>
       <p>Bienvenido 👋</p>
-      <p>Inicia sesión para comenzar a acumular puntos.</p>
+      <p>Inicia sesión para comenzar a acumular puntos.</p>      
     </ng-template>
   </div>
-
   <div class="promo-card mat-elevation-z2">
     <div class="promo-text">
       <h3>Oferta de Abril</h3>

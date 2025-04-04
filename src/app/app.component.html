@@ -19,10 +19,12 @@
     </div>
     <mat-tab-group headerPosition="below" class="bottom-tab-group">
         <mat-tab label="Inicio">
-            <app-home
-              [currentUser]="currentUser"
-              [userData]="userData"
-            ></app-home>
+          <app-home
+          *ngIf="currentUser && userData"
+          [currentUser]="currentUser"
+          [userData]="userData"
+        ></app-home>
+        
         </mat-tab>
         <mat-tab label="Ordenes">
             Content 2

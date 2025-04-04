@@ -23,6 +23,7 @@ export class UserService {
     const userRef = this.getUserRef(user.uid);
     await setDoc(userRef, {
       points: 0,
+      stamps: 0,
       displayName: user.displayName || '',
       email: user.email || '',
       createdAt: new Date()

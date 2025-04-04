@@ -153,15 +153,15 @@
       <div class="right-side">
         <div *ngIf="!formSelected" class="example-button-row">
           <button
+            *ngIf="(formSelected === 'login' || !formSelected) && !data.currentUser"
             mat-flat-button color="primary"
-            (click)="formSelected = 'login'"
-            [disabled]="data.currentUser">
+            (click)="formSelected = 'login'">
             Inicia Sesión
           </button>
           <button
             (click)="logout()"
             mat-raised-button
-            [disabled]="!data.currentUser"
+            *ngIf="data.currentUser !== undefined"
             color="warn">
             Cerrar Sesión
           </button>

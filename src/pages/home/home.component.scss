@@ -1,9 +1,10 @@
   .points-card {
-    background: #000000;
-    color: white;
+    background: white;
+    color: black;
     border-radius: 16px;
     padding: 1rem;
     text-align: center;
+    height: auto;
   }
   
   .promo-card {
@@ -17,5 +18,38 @@
   
   .promo-icon {
     color: #5d4037;
+  }
+  
+  .progress-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 40px);
+    grid-gap: 10px;
+    justify-content: center;
+    margin: 20px auto;
+  
+    button {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #333;
+      background-color: white;
+      color: #999;
+      font-weight: bold;
+      font-size: 16px;
+  
+      &.active {
+        background-color: #333;
+        color: white;
+      }
+  
+      &.gift {
+        color: #999;
+        border-color: #999;
+      }
+  
+      mat-icon {
+        font-size: 20px;
+      }
+    }
   }
   
