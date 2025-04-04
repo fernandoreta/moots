@@ -56,6 +56,17 @@ export class UserService {
     this.loadingService.hide();
   }
 
+  async addStamps(user: User, amount: number): Promise<void> {
+    this.loadingService.show();
+    const userRef = this.getUserRef(user.uid);
+    const snap = await getDoc(userRef);
+    if (snap.exists()) {
+      const current = snap.data()['stamps'] ?? 0;
+      await updateDoc(userRef, { stamps: current + amount });
+    }
+    this.loadingService.hide();
+  }
+
   async updateUser(user: User, data: any): Promise<void> {
     this.loadingService.show();
     await updateDoc(this.getUserRef(user.uid), data);

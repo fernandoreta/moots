@@ -53,3 +53,38 @@
     }
   }
   
+  .reward-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: Roboto, sans-serif;
+  
+    .icon-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 8px solid #4EC9B0; // turquesa
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+  
+      mat-icon {
+        font-size: 24px;
+        color: #000;
+      }
+    }
+  
+    .reward-text {
+      .title {
+        font-weight: 500;
+        color: #333;
+      }
+  
+      .subtitle {
+        font-size: 13px;
+        color: #666;
+      }
+    }
+  }
+  

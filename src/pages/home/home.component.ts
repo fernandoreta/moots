@@ -44,11 +44,21 @@ export class HomeComponent implements OnInit {
     this.userData = await this.userService.getUserData(this.currentUser);
   }
 
-  ngOnInit(): void {
+  async modifyStamp(stamp: number) {
+    await this.userService.addStamps(this.currentUser , stamp);
+    this.userData = await this.userService.getUserData(this.currentUser);
+    this.refreshStamps();
+  }
+
+  refreshStamps() {
     this.stamps.forEach(stamp => {
       if (stamp?.number && 'number' in stamp) {
         stamp.active = stamp.number <= this.userData.stamps;
       }
     });
+  }
+
+  ngOnInit(): void {
+    this.refreshStamps();
   }
 }
