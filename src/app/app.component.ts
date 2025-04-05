@@ -1,6 +1,6 @@
-import { Component, inject, model, OnInit, signal } from '@angular/core';
+import { Component, inject, model, OnInit, signal, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Observable } from 'rxjs';
 import { HomeComponent } from '../pages/home/home.component';
@@ -10,11 +10,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { Firestore, collection, doc, setDoc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { LoginComponent } from '../pages/login/login.component';
 import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
-import { IPartners } from '../interfaces/user.interface';
+import { IPartners, IUSer } from '../interfaces/user.interface';
 import { UserService } from '../services/user.service';
 import { LoadingService } from '../services/loading.service';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { DashboardComponent } from '../pages/dashboard/dashboard.component';
 export interface DialogData {
   animal: string;
   name: string;
@@ -28,7 +29,8 @@ export interface DialogData {
     MatButtonModule,
     MatMenuModule,
     MatProgressSpinnerModule,
-    CommonModule
+    CommonModule,
+    DashboardComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -52,6 +54,18 @@ export class AppComponent implements OnInit {
         // Solo mostrar tabs si estás dentro de la sección /tabs
         this.showTabs = event.url.startsWith('/tabs');
       });
+  }
+
+  @ViewChild('mainTabGroup') tabGroup!: MatTabGroup;
+
+  goToTab(index: number) {
+    this.tabGroup.selectedIndex = index;
+  }
+  
+  goToCommerceWithData(partnerName: string) {
+    this.tabGroup.selectedIndex = 1;
+    this.userService.setPartnerName(partnerName);
+    console.log('📦 Recibido desde Dashboard:', partnerName);
   }
 
   login() {

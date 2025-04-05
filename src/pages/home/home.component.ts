@@ -21,6 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class HomeComponent implements OnInit {
   maxPoints = 100;
+  partnerName = '';
   stamps = [
     { number: 1, active: false },
     { number: 2, active: false },
@@ -52,7 +53,7 @@ export class HomeComponent implements OnInit {
   private refreshStamps() {
     this.stamps.forEach(stamp => {
       if (stamp?.number && 'number' in stamp) {
-        stamp.active = stamp.number <= this.userData.partners['moots'].stamps;
+        stamp.active = stamp.number <= this.userData.partners[this.partnerName].stamps;
       }
     });
   }
@@ -61,6 +62,12 @@ export class HomeComponent implements OnInit {
     this.userService.userData$.subscribe(data => {
       if (data) {
         this.userData = data;
+        this.refreshStamps();
+      }
+    });
+    this.userService.partnerName$.subscribe(partnerName => {
+      if (partnerName) {
+        this.partnerName = partnerName;
         this.refreshStamps();
       }
     });

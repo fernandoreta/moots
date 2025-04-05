@@ -16,8 +16,15 @@ export class UserService {
   private userDataSubject = new BehaviorSubject<any | null>(null);
   userData$ = this.userDataSubject.asObservable();
 
+  private partnerNameSubject = new BehaviorSubject<any | null>(null);
+  partnerName$ = this.partnerNameSubject.asObservable();
+
   setUserData(data: any) {
     this.userDataSubject.next(data);
+  }
+
+  setPartnerName(data: string) {
+    this.partnerNameSubject.next(data);
   }
 
   private getUserRef(uid: string) {
@@ -74,8 +81,8 @@ export class UserService {
     const userRef = this.getUserRef(user.uid);
     const snap = await getDoc(userRef);
     if (snap.exists()) {
-      const current = snap.data()['partners']['moots']['points'] ?? 0;
-      const partnerId = 'moots';
+      const partnerId = this.partnerNameSubject.getValue();
+      const current = snap.data()['partners'][partnerId]['points'] ?? 0;
       await updateDoc(userRef, {
         [`partners.${partnerId}.points`]: current + amount
       });
@@ -88,8 +95,8 @@ export class UserService {
     const userRef = this.getUserRef(user.uid);
     const snap = await getDoc(userRef);
     if (snap.exists()) {
-      const current = snap.data()['partners']['moots']['stamps'] ?? 0;
-      const partnerId = 'moots';
+      const partnerId = this.partnerNameSubject.getValue();
+      const current = snap.data()['partners'][partnerId]['stamps'] ?? 0;
       await updateDoc(userRef, {
         [`partners.${partnerId}.stamps`]: current + amount
       });

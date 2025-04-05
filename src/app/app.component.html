@@ -15,22 +15,31 @@
               <mat-icon>voicemail</mat-icon>
               <span>Check voice mail</span>
             </button>
-          </mat-menu>          
+          </mat-menu>
     </div>
-    <mat-tab-group headerPosition="below" class="bottom-tab-group">
-        <mat-tab label="Inicio">
-          <app-home
+
+    <mat-tab-group #mainTabGroup headerPosition="below" class="bottom-tab-group">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>home</mat-icon>
+        </ng-template>
+        <app-dashboard (goToCommerce)="goToCommerceWithData($event)"></app-dashboard>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>storefront</mat-icon>
+        </ng-template>
+        <app-home
           [currentUser]="currentUser"
           [userData]="userData"
         ></app-home>
-        
-        </mat-tab>
-        <mat-tab label="Ordenes">
-            Content 2
-        </mat-tab>
-        <mat-tab label="Perfil">
-            Content 3
-        </mat-tab>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>person</mat-icon>
+        </ng-template>
+        Content 3
+      </mat-tab>
     </mat-tab-group>
 </div>
 

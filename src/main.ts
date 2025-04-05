@@ -3,12 +3,13 @@ import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideZoneChangeDetection } from '@angular/core';
+import { importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { loadingInterceptor } from './services/loading.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyK-uH4edU0GLDxBw8556AFeYXCJTyojo",
@@ -28,6 +29,7 @@ bootstrapApplication(AppComponent, {
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
+    importProvidersFrom(BrowserAnimationsModule),
     provideHttpClient(
       withInterceptors([loadingInterceptor])
     ),
