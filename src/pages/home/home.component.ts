@@ -5,7 +5,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { MatButtonModule } from '@angular/material/button';
-import { IUSerData } from '../../interfaces/user.interface';
 
 @Component({
   selector: 'app-home',
@@ -23,9 +22,9 @@ import { IUSerData } from '../../interfaces/user.interface';
 export class HomeComponent implements OnInit {
   maxPoints = 100;
   stamps = [
-    { number: 1, active: true },
-    { number: 2, active: true },
-    { number: 3, active: true },
+    { number: 1, active: false },
+    { number: 2, active: false },
+    { number: 3, active: false },
     { number: 4, active: false },
     { number: 5, active: false },
     { number: 6, active: false },
@@ -50,15 +49,20 @@ export class HomeComponent implements OnInit {
     this.refreshStamps();
   }
 
-  refreshStamps() {
+  private refreshStamps() {
     this.stamps.forEach(stamp => {
       if (stamp?.number && 'number' in stamp) {
-        stamp.active = stamp.number <= this.userData.stamps;
+        stamp.active = stamp.number <= this.userData.partners['moots'].stamps;
       }
     });
   }
 
   ngOnInit(): void {
-    this.refreshStamps();
+    this.userService.userData$.subscribe(data => {
+      if (data) {
+        this.userData = data;
+        this.refreshStamps();
+      }
+    });
   }
 }

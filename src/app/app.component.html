@@ -20,7 +20,6 @@
     <mat-tab-group headerPosition="below" class="bottom-tab-group">
         <mat-tab label="Inicio">
           <app-home
-          *ngIf="currentUser && userData"
           [currentUser]="currentUser"
           [userData]="userData"
         ></app-home>

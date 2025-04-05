@@ -2,8 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { deleteField, doc, Firestore, setDoc, updateDoc } from '@angular/fire/firestore';
 import { User } from 'firebase/auth';
 import { getDoc } from 'firebase/firestore';
-import { IUSerData } from '../interfaces/user.interface';
+import { IPartners, IUSer } from '../interfaces/user.interface';
 import { LoadingService } from './loading.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,37 +13,60 @@ export class UserService {
 
   constructor(private loadingService: LoadingService) { }
   private firestore = inject(Firestore);
+  private userDataSubject = new BehaviorSubject<any | null>(null);
+  userData$ = this.userDataSubject.asObservable();
+
+  setUserData(data: any) {
+    this.userDataSubject.next(data);
+  }
 
   private getUserRef(uid: string) {
     return doc(this.firestore, 'users', uid);
   }
-  
+
+  getPartners() {
+    const partners = {
+      moots: {
+        points: 0,
+        stamps: 0,
+        rewards: [] as any[]
+      },
+      localcoffee: {
+        points: 0,
+        stamps: 0,
+        rewards: [] as any[]
+      }
+    };
+    return partners;
+  }
 
   async createUserDocument(user: User) {
     this.loadingService.show();
     const userRef = this.getUserRef(user.uid);
-    await setDoc(userRef, {
-      points: 0,
-      stamps: 0,
+  
+    const userData: IUSer = {
       displayName: user.displayName || '',
       email: user.email || '',
-      createdAt: new Date()
-    });
+      createdAt: new Date(),
+      partners: this.getPartners()
+    };
+  
+    await setDoc(userRef, userData);
     this.loadingService.hide();
-    console.log('✅ Documento creado para el usuario con puntos en 0');
-  }
+    console.log('✅ Documento creado para el usuario con estructura de negocios vacía');
+  }  
 
-  async getUserData(user: User): Promise<IUSerData> {
+  async getUserData(user: User): Promise<IPartners> {
     this.loadingService.show();
     const userRef = this.getUserRef(user.uid);  
     const snap = await getDoc(userRef);
 
     if (snap.exists()) {
-      const data = snap.data() as IUSerData;
+      const data = snap.data() as IPartners;
       this.loadingService.hide();
       return data;
     }
-    return {};
+    return {} as any;
   }
 
   async addPoints(user: User, amount: number): Promise<void> {
@@ -50,8 +74,11 @@ export class UserService {
     const userRef = this.getUserRef(user.uid);
     const snap = await getDoc(userRef);
     if (snap.exists()) {
-      const current = snap.data()['points'] ?? 0;
-      await updateDoc(userRef, { points: current + amount });
+      const current = snap.data()['partners']['moots']['points'] ?? 0;
+      const partnerId = 'moots';
+      await updateDoc(userRef, {
+        [`partners.${partnerId}.points`]: current + amount
+      });
     }
     this.loadingService.hide();
   }
@@ -61,8 +88,11 @@ export class UserService {
     const userRef = this.getUserRef(user.uid);
     const snap = await getDoc(userRef);
     if (snap.exists()) {
-      const current = snap.data()['stamps'] ?? 0;
-      await updateDoc(userRef, { stamps: current + amount });
+      const current = snap.data()['partners']['moots']['stamps'] ?? 0;
+      const partnerId = 'moots';
+      await updateDoc(userRef, {
+        [`partners.${partnerId}.stamps`]: current + amount
+      });
     }
     this.loadingService.hide();
   }

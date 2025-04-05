@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Firestore, collection, doc, setDoc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { LoginComponent } from '../pages/login/login.component';
 import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
-import { IUSerData } from '../interfaces/user.interface';
+import { IPartners } from '../interfaces/user.interface';
 import { UserService } from '../services/user.service';
 import { LoadingService } from '../services/loading.service';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
   currentUser!: User;
   private auth = inject(Auth);
 
-  userData!: IUSerData;
+  userData!: IPartners;
   loading$ = inject(LoadingService).loading$;
   constructor(
     private router: Router,
@@ -78,17 +78,13 @@ export class AppComponent implements OnInit {
     onAuthStateChanged(this.auth, async user => {
       if (user) {
         this.currentUser = user;
-        console.log('🙋 Usuario activo:', user.email);
-
-        this.userData = await this.userService.getUserData(user);
-        if (this.userData) {
-          console.log('⭐ Puntos del usuario:', this.userData.points);
-        } else {
-          console.warn('⚠️ No se encontró documento del usuario en Firestore');
+        const data = await this.userService.getUserData(user);
+        if (data) {
+          this.userData = data;
+          this.userService.setUserData(data);
         }
-      } else {
-        console.log('🚫 No hay sesión activa');
       }
     });
+    
   }
 }
