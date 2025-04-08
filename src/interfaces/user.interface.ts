@@ -14,3 +14,9 @@ export interface IUSer {
     createdAt: Date;
     partners: any;
 }
+
+export interface IReward {
+    name: string;
+    claimed: boolean;
+    createdAt: string;
+}

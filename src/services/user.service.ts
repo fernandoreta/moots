@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { deleteField, doc, Firestore, setDoc, updateDoc } from '@angular/fire/firestore';
 import { User } from 'firebase/auth';
-import { getDoc } from 'firebase/firestore';
-import { IPartners, IUSer } from '../interfaces/user.interface';
+import { arrayUnion, getDoc } from 'firebase/firestore';
+import { IPartners, IReward, IUSer } from '../interfaces/user.interface';
 import { LoadingService } from './loading.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -98,11 +98,27 @@ export class UserService {
       const partnerId = this.partnerNameSubject.getValue();
       const current = snap.data()['partners'][partnerId]['stamps'] ?? 0;
       await updateDoc(userRef, {
-        [`partners.${partnerId}.stamps`]: current + amount
+        [`partners.${partnerId}.stamps`]: amount !== 0 ? current + amount : 0
       });
     }
     this.loadingService.hide();
   }
+
+  async addReward(user: User): Promise<void> {
+    const userRef = this.getUserRef(user.uid);
+    const partnerId = this.partnerNameSubject.getValue();
+  
+    const reward: IReward = {
+      name: 'Café gratis',
+      claimed: false,
+      createdAt: new Date().toISOString(),
+    };
+  
+    await updateDoc(userRef, {
+      [`partners.${partnerId}.rewards`]: arrayUnion(reward)
+    });
+  }
+  
 
   async updateUser(user: User, data: any): Promise<void> {
     this.loadingService.show();

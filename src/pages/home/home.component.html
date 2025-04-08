@@ -28,23 +28,38 @@
     </ng-template>
   </div>
 
-  <div *ngIf="currentUser" class="points-card mat-elevation-z2">
+  <div *ngIf="currentUser && userData" class="points-card mat-elevation-z2">
     <h3>Rewards</h3>
-    <div class="reward-container">
-      <div class="icon-circle">
-        <mat-icon>card_giftcard</mat-icon>
-      </div>
-      <div class="reward-text">
-        <div class="title">Café Gratis ❤️</div>
-        <div class="subtitle">Ve por el 👟</div>
-      </div>
-    </div>    
+      <div>
+        <div class="reward-container" *ngIf="rewards.length > 0">
+          <div *ngFor="let reward of rewards">
+            <div class="icon-circle">
+              <mat-icon>card_giftcard</mat-icon>
+            </div>
+            <div class="reward-text">
+              <div class="title">{{ reward.name }} ❤️</div>
+              <div class="subtitle">Ven por el 👟</div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="rewards.length === 0">
+          <div>
+            <mat-icon>warning</mat-icon>
+          </div>
+          <div class="reward-text">
+            <div class="title">Ningun Reward ❤️‍🩹</div>
+            <div class="subtitle">Acumula puntos para ganar premios 🏅</div>
+          </div>
+        </div>
+
+      </div> 
   </div>
 
   <div class="promo-card mat-elevation-z2">
     <div class="promo-text">
       <h3>Oferta de Abril</h3>
-      <button (click)="modifyStamp(1)">Arega 1 ⭐️</button>
+      <button (click)="modifyStamp(1)">Agrega 1 ⭐️</button>
       <button (click)="modifyStamp(-1)">Resta 1 ⭐️</button>
       <p>Compra 1 Latte y llevate el otro GRATIS!</p>
     </div>
