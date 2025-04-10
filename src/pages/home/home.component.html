@@ -1,4 +1,5 @@
-<div class="container">
+<div class="container body-border">
+  <h3 class="stamps-title">🤩 STAMPS</h3>
   <div class="points-card mat-elevation-z2">
     <ng-container *ngIf="currentUser && userData; else noUser">
       <!-- Current comment points -->
@@ -9,7 +10,7 @@
       <small>{{ maxPoints - userData.points }} puntos más para una bebida gratis</small> -->
       
       <!-- Stamps -->
-      <h3>🤩 STAMPS</h3>
+      
       <div class="progress-grid">
         <button mat-icon-button *ngFor="let stamp of stamps" [ngClass]="{
           'active': stamp.active,
@@ -28,8 +29,8 @@
     </ng-template>
   </div>
 
+  <h3 class="stamps-title">🏅 Rewards</h3>
   <div *ngIf="currentUser && userData" class="points-card mat-elevation-z2">
-    <h3>Rewards</h3>
       <div>
         <div class="reward-container" *ngIf="rewards.length > 0">
           <div *ngFor="let reward of rewards">
@@ -56,6 +57,7 @@
       </div> 
   </div>
 
+  <h3 class="stamps-title">🥳 Promos</h3>
   <div class="promo-card mat-elevation-z2">
     <div class="promo-text">
       <h3>Oferta de Abril</h3>

@@ -2,7 +2,7 @@
     .mat-mdc-tab-body-wrapper {
         display: flex;
         flex-direction: column;
-        height: 95vh;
+        height: 70vh;
       }
 }
   
@@ -15,9 +15,10 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    background: white;
-    z-index: 100;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    background: rgb(229, 225, 221);
+    z-index: 1000;
+    border-radius: 50px 50px 0 0;
+    margin-top: 20px;
   }  
   
   .bottom-tabs {
@@ -47,17 +48,49 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 56px;
-    background-color: #fff;
+    height: 275px;
+    background-color: darkkhaki;
     z-index: 101;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 0px 0px 0px 0px;
+    padding: 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     font-weight: bold;
     font-size: 18px;
   }
+  
+  .centered-button {
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    width: 150px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+  }
+  
+  .centered-button img {
+    height: 100px;
+    width: 100px;
+  }
+  
+  .button-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .button-label {
+    margin-top: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }  
   
   .loading-overlay {
     position: fixed;

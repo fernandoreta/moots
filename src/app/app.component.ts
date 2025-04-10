@@ -41,6 +41,7 @@ export class AppComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   currentUser!: User;
   private auth = inject(Auth);
+  partnerName = 'Home';
 
   userData!: IPartners;
   loading$ = inject(LoadingService).loading$;
@@ -64,6 +65,7 @@ export class AppComponent implements OnInit {
   
   goToCommerceWithData(partnerName: string) {
     this.tabGroup.selectedIndex = 1;
+    this.partnerName = partnerName;
     this.userService.setPartnerName(partnerName);
     console.log('📦 Recibido desde Dashboard:', partnerName);
   }

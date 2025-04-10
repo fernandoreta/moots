@@ -1,45 +1,24 @@
 <!-- dashboard.component.html -->
 <div class="dashboard-container" [@fadeIn]>
     <div class="dashboard-content">
-      <!-- POPULAR (arriba) -->
-      <div class="top-section">
-        <h2 class="section-title">POPULAR</h2>
-        <mat-card class="popular-card">
-          <div class="card-content">
-            <!-- <img src="assets/donut.png" alt="Donut" class="card-image" /> -->
-            <div>
-              <h3 class="brand">Dunkin's</h3>
-              <p class="subtext">Cheeky Treat</p>
-              <p class="expiry">Exp. 31/3/2020</p>
-            </div>
-          </div>
-        </mat-card>
-      </div>
-  
       <!-- CATEGORIES (abajo) -->
       <div class="bottom-section">
-        <mat-tab-group class="categories-tabs">
-          <mat-tab label="COFFEE">
-            <div class="vertical-store-list">
-              <mat-card *ngFor="let commerce of commerces" class="store-card {{commerce.class}}">
-                <div (click)="goToTabWithData(commerce.name)" class="store-content">
-                    <span class="store-name">
-                        {{ commerce.name | uppercase }}
-                    </span>
-                </div>
-                <div class="perforations">
-                    <span
-                    *ngFor="let slot of [].constructor(commerce.totalSlots); let i = index"
-                    class="dot"
-                    [class.active]="i < commerce.activeSlots"
-                  ></span>                  
-                </div>
-              </mat-card>
+        <div class="vertical-store-list">
+          <mat-card *ngFor="let commerce of commerces" class="store-card {{commerce.class}}">
+            <div (click)="goToTabWithData(commerce.name)" class="store-content">
+                <span class="store-name">
+                    {{ commerce.name | uppercase }}
+                </span>
             </div>
-          </mat-tab>
-          <mat-tab label="FASHION"></mat-tab>
-          <mat-tab label="ENTERTAINMENT"></mat-tab>
-        </mat-tab-group>
+            <div class="perforations">
+                <span
+                *ngFor="let slot of [].constructor(commerce.totalSlots); let i = index"
+                class="dot"
+                [class.active]="i < commerce.activeSlots"
+              ></span>                  
+            </div>
+          </mat-card>
+        </div>
       </div>
     </div>
   </div>
