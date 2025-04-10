@@ -65,6 +65,7 @@ export class AppComponent implements OnInit {
   
   goToCommerceWithData(partnerName: string) {
     this.tabGroup.selectedIndex = 1;
+    console.log(partnerName)
     this.partnerName = partnerName;
     this.userService.setPartnerName(partnerName);
     console.log('📦 Recibido desde Dashboard:', partnerName);
@@ -75,11 +76,12 @@ export class AppComponent implements OnInit {
       data: { currentUser: this.currentUser },
     });
 
-    dialogRef.afterClosed().subscribe((result: User) => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       console.log('The dialog was closed');
       if (result !== undefined) {
         this.currentUser = result;
-      } else {
+      }
+      if (result === false) {
         this.currentUser = undefined as any;
       }
     });

@@ -1,10 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
+import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,8 +24,10 @@ import { CommonModule } from '@angular/common';
     ])
   ]
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   @Output() goToCommerce = new EventEmitter<any>();
+  private auth = inject(Auth);
+  currentUser!: User;
 
   commerces = [
     {
@@ -52,4 +53,11 @@ export class DashboardComponent {
     this.goToCommerce.emit(partnerName);
   }
   
+  ngOnInit(): void {
+    onAuthStateChanged(this.auth, async user => {
+      if (user) {
+        this.currentUser = user;
+      }
+    })
+  }
 }

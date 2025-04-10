@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit {
     signOut(this.auth)
       .then(() => {
         this.data.currentUser = undefined as any;
-        this.dialogRef.close(this.data.currentUser);
+        this.dialogRef.close(false);
         console.log('👋 Sesión cerrada');
         this.router.navigateByUrl('');
       })

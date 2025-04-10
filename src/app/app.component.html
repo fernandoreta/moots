@@ -7,7 +7,7 @@
         [matMenuTriggerFor]="menu"
         aria-label="Example icon-button with a menu"
       >
-        <img src="assets/grocery.png" alt="Ícono de tienda" class="icon-image" />
+      <img [src]="'assets/' + partnerName + '.png'" alt="Ícono de tienda" class="icon-image" />
       </button>
       <h3 class="button-label">{{ partnerName.toUpperCase() }}</h3>
     </div>

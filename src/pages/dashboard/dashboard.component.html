@@ -3,23 +3,31 @@
     <div class="dashboard-content">
       <!-- CATEGORIES (abajo) -->
       <div class="bottom-section">
-        <div class="vertical-store-list">
-          <mat-card *ngFor="let commerce of commerces" class="store-card {{commerce.class}}">
-            <div (click)="goToTabWithData(commerce.name)" class="store-content">
-                <span class="store-name">
-                    {{ commerce.name | uppercase }}
-                </span>
-            </div>
-            <div class="perforations">
+        <div class="carousel-container">
+          <div class="carousel-track">
+            <mat-card *ngFor="let commerce of commerces" class="store-card {{commerce.class}}">
+              <div (click)="goToTabWithData(commerce.name)" class="store-content">
+                <div
+                  class="company-logo"
+                  [ngStyle]="{ 'background-image': 'url(assets/' + 'moots.png' + ')' }">
+                </div>
+                <div class="card-info">
+                  <h3 class="user-name">{{ currentUser?.displayName }}</h3>
+                  <h4 class="commerce-name">{{ commerce.name.toUpperCase() }}</h4>
+                </div>
+              </div>
+              <div class="perforations">
                 <span
-                *ngFor="let slot of [].constructor(commerce.totalSlots); let i = index"
-                class="dot"
-                [class.active]="i < commerce.activeSlots"
-              ></span>                  
-            </div>
-          </mat-card>
+                  *ngFor="let slot of [].constructor(commerce.totalSlots); let i = index"
+                  class="dot"
+                  [class.active]="i < commerce.activeSlots"
+                ></span>
+              </div>
+            </mat-card>
+          </div>
         </div>
       </div>
+      
     </div>
   </div>
   

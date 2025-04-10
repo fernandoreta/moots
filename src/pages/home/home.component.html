@@ -2,15 +2,6 @@
   <h3 class="stamps-title">🤩 STAMPS</h3>
   <div class="points-card mat-elevation-z2">
     <ng-container *ngIf="currentUser && userData; else noUser">
-      <!-- Current comment points -->
-      <!-- <p>Hola {{ currentUser.displayName }} Tienes</p>
-      <h2>{{ userData.points }}</h2>
-      <p>Puntos</p>
-      <mat-progress-bar [value]="(userData.points / maxPoints) * 100" color="accent"></mat-progress-bar>
-      <small>{{ maxPoints - userData.points }} puntos más para una bebida gratis</small> -->
-      
-      <!-- Stamps -->
-      
       <div class="progress-grid">
         <button mat-icon-button *ngFor="let stamp of stamps" [ngClass]="{
           'active': stamp.active,

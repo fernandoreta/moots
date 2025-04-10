@@ -1,11 +1,111 @@
+.carousel-container {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px 0;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 16px;
+  padding-left: 16px;
+}
+
+.store-card {
+  height: 170px;
+  scroll-snap-align: start;
+  min-width: 280px;
+  max-width: 300px;
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  .store-content {
+    // Commented to see the logo all over the card
+    // position: relative;
+    z-index: 2;
+  }
+
+  .company-logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.08;
+    z-index: 1;
+  }
+
+  .card-info {
+    position: relative;
+    z-index: 2;
+
+    .user-name {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .commerce-name {
+      margin: 4px 0 0;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+
+  .perforations {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: white;
+      opacity: 0.3;
+
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
+
+  &.coffee-card {
+    background-color: #e94e77;
+  }
+
+  &.bakery-card {
+    background: linear-gradient(90deg, #fcb045, #fdc830);
+    color: #333;
+  }
+
+  &.nespresso-card {
+    background-color: #8e44ad;
+  }
+}
+
+
 .dashboard-container {
     height: 100vh; // Toda la pantalla
     overflow: hidden;
-  
+    
     .dashboard-content {
       display: flex;
       flex-direction: column;
       height: 100%;
+      margin-top: 60px;
+      margin-left: 10px;
+      margin-right: 10px;
     }
   
     .top-section {
@@ -44,7 +144,6 @@
         align-items: center;
         justify-content: flex-start;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  
         .store-content {
           font-size: 16px;
           width: 100%;
