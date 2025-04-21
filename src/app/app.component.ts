@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
   currentUser!: User;
   private auth = inject(Auth);
   partnerName = 'Home';
-
+  isQrClicked = false;
   userData!: IPartners;
   loading$ = inject(LoadingService).loading$;
   constructor(
@@ -58,6 +58,11 @@ export class AppComponent implements OnInit {
   }
 
   @ViewChild('mainTabGroup') tabGroup!: MatTabGroup;
+
+  scanQr() {
+    console.log('scan');
+    this.isQrClicked = true;
+  }
 
   goToTab(index: number) {
     this.tabGroup.selectedIndex = index;

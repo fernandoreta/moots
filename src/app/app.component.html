@@ -1,4 +1,4 @@
-<div>
+<div class="content">
   <div class="header">
     <div>
       <div *ngIf="partnerName !== 'Home'">
@@ -30,8 +30,7 @@
         <span>Check voice mail</span>
       </button>
     </mat-menu>
-  </div>  
-
+  </div>
     <mat-tab-group #mainTabGroup headerPosition="below" class="bottom-tab-group">
       <mat-tab>
         <ng-template mat-tab-label>
@@ -49,7 +48,10 @@
         ></app-home>
       </mat-tab>
     </mat-tab-group>
-</div>
+    <div class="scan-qr" (click)="scanQr()" [class.clicked]="isQrClicked" (animationend)="isQrClicked = false">
+      <img src="assets/scan-qr.png" alt="QR Code" />
+    </div>    
+  </div>
 
 <div class="loading-overlay" *ngIf="loading$ | async">
   <mat-spinner color="accent" diameter="50"></mat-spinner>
