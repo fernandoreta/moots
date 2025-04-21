@@ -1,15 +1,23 @@
 <div>
   <div class="header">
-    <div class="button-with-label">
+    <div>
+      <div *ngIf="partnerName !== 'Home'">
+        <img [src]="'assets/' + partnerName + '.png'" class="icon-image" />
+      </div>
+      <div *ngIf="partnerName === 'Home'">
+        <img [src]="'assets/' + 'grocery.png'" class="icon-image" />
+      </div>
       <button
         class="centered-button"
         mat-icon-button
         [matMenuTriggerFor]="menu"
         aria-label="Example icon-button with a menu"
       >
-      <img [src]="'assets/' + partnerName + '.png'" alt="Ícono de tienda" class="icon-image" />
+        <h3 class="button-label">
+          {{ partnerName.toUpperCase() }}
+          <mat-icon>arrow_drop_down</mat-icon>
+        </h3>
       </button>
-      <h3 class="button-label">{{ partnerName.toUpperCase() }}</h3>
     </div>
   
     <mat-menu #menu="matMenu">

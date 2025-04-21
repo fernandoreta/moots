@@ -9,7 +9,7 @@
               <div (click)="goToTabWithData(commerce.name)" class="store-content">
                 <div
                   class="company-logo"
-                  [ngStyle]="{ 'background-image': 'url(assets/' + 'moots.png' + ')' }">
+                  [ngStyle]="{ 'background-image': 'url(assets/' + commerce.name + '.png' + ')' }">
                 </div>
                 <div class="card-info">
                   <h3 class="user-name">{{ currentUser?.displayName }}</h3>
