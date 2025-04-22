@@ -53,16 +53,15 @@
     left: 0;
     width: 100%;
     height: 275px;
-    background-color: darkkhaki;
+    background: linear-gradient(to bottom, white, darkkhaki);
     z-index: 101;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0;
-    // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     font-weight: bold;
     font-size: 18px;
-  }
+  }  
 
   .scan-qr {
     position: fixed;

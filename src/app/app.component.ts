@@ -64,6 +64,23 @@ export class AppComponent implements OnInit {
     this.isQrClicked = true;
   }
 
+  onTabChange(index: number): void {
+    if (index === 1) {
+      this.onStorefrontClick();
+    } else {
+      this.userService.partnerNameSubject.next('');
+      this.partnerName = 'Home';
+    }
+  }
+  
+  onStorefrontClick(): void {
+    const partners = this.userService.getPartners();
+    const firstPartner = Object.keys(partners)[0];
+    if (!this.userService.partnerNameSubject.value) {
+      this.goToCommerceWithData(firstPartner);
+    }
+  }
+
   goToTab(index: number) {
     this.tabGroup.selectedIndex = index;
   }

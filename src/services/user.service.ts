@@ -21,7 +21,7 @@ export class UserService {
   private userDataSubject = new BehaviorSubject<any | null>(null);
   userData$ = this.userDataSubject.asObservable();
 
-  private partnerNameSubject = new BehaviorSubject<any | null>(null);
+  partnerNameSubject = new BehaviorSubject<any | null>(null);
   partnerName$ = this.partnerNameSubject.asObservable();
 
   setUserData(data: any) {

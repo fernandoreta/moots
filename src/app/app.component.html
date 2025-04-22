@@ -31,12 +31,18 @@
       </button>
     </mat-menu>
   </div>
-    <mat-tab-group #mainTabGroup headerPosition="below" class="bottom-tab-group">
+    <mat-tab-group
+      #mainTabGroup
+      headerPosition="below"
+      class="bottom-tab-group"
+      (selectedIndexChange)="onTabChange($event)">
       <mat-tab>
         <ng-template mat-tab-label>
           <mat-icon>home</mat-icon>
         </ng-template>
-        <app-dashboard (goToCommerce)="goToCommerceWithData($event)"></app-dashboard>
+        <app-dashboard
+          (goToCommerce)="goToCommerceWithData($event)">
+        </app-dashboard>
       </mat-tab>
       <mat-tab>
         <ng-template mat-tab-label>
