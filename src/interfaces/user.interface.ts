@@ -20,3 +20,10 @@ export interface IReward {
     claimed: boolean;
     createdAt: string;
 }
+
+export interface IAllPartners {
+    id: string;
+    class: string;
+    activeSlots: number;
+    totalSlots: number
+}

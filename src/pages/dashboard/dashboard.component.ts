@@ -4,6 +4,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
+import { UserService } from '../../services/user.service';
+import { IAllPartners } from '../../interfaces/user.interface';
+import { from, map, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,22 +30,10 @@ import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
 export class DashboardComponent implements OnInit {
   @Output() goToCommerce = new EventEmitter<any>();
   private auth = inject(Auth);
+  private userService = inject(UserService);
   currentUser!: User;
 
-  commerces = [
-    {
-      name: 'moots',
-      class: 'coffee-card',
-      activeSlots: 3,
-      totalSlots: 8
-    },
-    {
-      name: 'localcoffee',
-      class: 'bakery-card',
-      activeSlots: 5,
-      totalSlots: 8
-    }
-  ];
+  partners!: any;
 
   selectCommerce(commerce: any) {
     console.log(commerce);
@@ -54,10 +45,26 @@ export class DashboardComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    onAuthStateChanged(this.auth, async user => {
-      if (user) {
-        this.currentUser = user;
-      }
-    })
+    onAuthStateChanged(this.auth, user => {
+      if (!user) return;
+  
+      this.currentUser = user;
+  
+      from(this.userService.getUserData(user)).pipe(
+        switchMap(userData =>
+          from(this.userService.getAllPartners()).pipe(
+            map(partners =>
+              partners.map((item: any) => ({
+                ...item,
+                activeSlots: userData.partners?.[item.id]?.stamps ?? 0
+              }))
+            )
+          )
+        ),
+        tap(updatedPartners => {
+          this.partners = updatedPartners;
+        })
+      ).subscribe();
+    });
   }
 }

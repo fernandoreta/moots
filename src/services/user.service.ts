@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { deleteField, doc, Firestore, setDoc, updateDoc } from '@angular/fire/firestore';
 import { User } from 'firebase/auth';
-import { arrayUnion, getDoc } from 'firebase/firestore';
-import { IPartners, IReward, IUSer } from '../interfaces/user.interface';
+import { arrayUnion, collectionGroup, getDoc, getDocs } from 'firebase/firestore';
+import { IAllPartners, IPartners, IReward, IUSer } from '../interfaces/user.interface';
 import { LoadingService } from './loading.service';
 import { BehaviorSubject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -36,19 +36,9 @@ export class UserService {
     return doc(this.firestore, 'users', uid);
   }
 
-  getPartners() {
-    const partners = {
-      moots: {
-        points: 0,
-        stamps: 0,
-        rewards: [] as any[]
-      },
-      localcoffee: {
-        points: 0,
-        stamps: 0,
-        rewards: [] as any[]
-      }
-    };
+  async getAllPartners() {
+    const partnersSnapshot = await getDocs(collectionGroup(this.firestore, 'partners'));
+    const partners = partnersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     return partners;
   }
 
@@ -60,7 +50,7 @@ export class UserService {
       displayName: user.displayName || '',
       email: user.email || '',
       createdAt: new Date(),
-      partners: this.getPartners()
+      partners: await this.getAllPartners()
     };
   
     await setDoc(userRef, userData);
@@ -71,7 +61,7 @@ export class UserService {
   async getUserData(user: User): Promise<IPartners> {
     this.loadingService.show();
     try {
-      const userRef = this.getUserRef(user.uid);  
+      const userRef = this.getUserRef(user.uid);
       const snap = await getDoc(userRef);
   
       if (snap.exists()) {

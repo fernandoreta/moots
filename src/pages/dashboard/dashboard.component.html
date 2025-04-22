@@ -4,16 +4,29 @@
       <!-- CATEGORIES (abajo) -->
       <div class="bottom-section">
         <div class="carousel-container">
-          <div class="carousel-track">
-            <mat-card *ngFor="let commerce of commerces" class="store-card {{commerce.class}}">
-              <div (click)="goToTabWithData(commerce.name)" class="store-content">
+          <div
+            class="carousel-track"
+            [ngStyle]="{
+              display: 'flex',
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+              gap: '1rem'
+            }"
+          >
+            <mat-card
+              *ngFor="let commerce of partners"
+              class="store-card {{ commerce.class }}"
+            >
+              <div (click)="goToTabWithData(commerce.id)" class="store-content">
                 <div
                   class="company-logo"
-                  [ngStyle]="{ 'background-image': 'url(assets/' + commerce.name + '.png' + ')' }">
-                </div>
+                  [ngStyle]="{
+                    'background-image': 'url(assets/' + commerce.id + '.png' + ')'
+                  }"
+                ></div>
                 <div class="card-info">
-                  <h3 class="user-name">{{ currentUser?.displayName }}</h3>
-                  <h4 class="commerce-name">{{ commerce.name.toUpperCase() }}</h4>
+                  <h3 class="user-name">{{ currentUser?.displayName?.toUpperCase() }}</h3>
+                  <h4 class="commerce-name">{{ commerce.id.toUpperCase() }}</h4>
                 </div>
               </div>
               <div class="perforations">
@@ -25,7 +38,7 @@
               </div>
             </mat-card>
           </div>
-        </div>
+        </div>        
       </div>
     </div>
   </div>

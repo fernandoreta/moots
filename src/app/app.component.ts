@@ -73,9 +73,9 @@ export class AppComponent implements OnInit {
     }
   }
   
-  onStorefrontClick(): void {
-    const partners = this.userService.getPartners();
-    const firstPartner = Object.keys(partners)[0];
+  async onStorefrontClick(): Promise<void> {
+    const partners = await this.userService.getAllPartners();
+    const firstPartner = partners[0].id;
     if (!this.userService.partnerNameSubject.value) {
       this.goToCommerceWithData(firstPartner);
     }

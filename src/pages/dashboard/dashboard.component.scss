@@ -2,16 +2,17 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  padding: 16px 0;
+  // padding: 16px 0;
 }
 
 .carousel-track {
-  display: flex;
+  // display: flex; // commented to use vertical instead of horizontal in cards.
   gap: 16px;
   padding-left: 16px;
 }
 
 .store-card {
+  margin-top: 20px;
   height: 170px;
   scroll-snap-align: start;
   min-width: 280px;
