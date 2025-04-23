@@ -12,7 +12,8 @@ export interface IUSer {
     displayName: string;
     email: string;
     createdAt: Date;
-    partners: any;
+    partners?: any;
+    partner?: string;
 }
 
 export interface IReward {
@@ -26,4 +27,5 @@ export interface IAllPartners {
     class: string;
     activeSlots: number;
     totalSlots: number
+    superuser?: string;
 }

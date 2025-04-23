@@ -11,7 +11,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { PartnersComponent } from '../partners/partners.component';
 import { HomeComponent } from '../home/home.component';
-import { IPartners } from '../../interfaces/user.interface';
+import { IAllPartners, IPartners } from '../../interfaces/user.interface';
 import { LoadingService } from '../../services/loading.service';
 import { UserService } from '../../services/user.service';
 import { LoginComponent } from '../login/login.component';
@@ -37,10 +37,12 @@ export class ShellComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   currentUser!: User;
   private auth = inject(Auth);
+  private loadingService = inject(LoadingService);
   partnerName = 'Home';
   isQrClicked = false;
   userData!: IPartners;
   loading$ = Inject(LoadingService).loading$;
+  private authInitialized = false;
   constructor(
     private router: Router,
     private userService: UserService
@@ -109,19 +111,32 @@ export class ShellComponent implements OnInit {
     });
   }
 
- private authInitialized = false;
+  async checkIfIsSuperAdmin(userEmail: string) {
+    const partners = await this.userService.getAllPartners();
+    return partners.some((partner: IAllPartners) => partner.superuser === userEmail);
+  }
 
   ngOnInit(): void {
     if (this.authInitialized) return;
     this.authInitialized = true;
-
+    this.loadingService.show();
     onAuthStateChanged(this.auth, async user => {
       if (user) {
         this.currentUser = user;
+        let isSuperUser = false;
         const data = await this.userService.getUserData(user);
+        if (user.email) {
+          isSuperUser = await this.checkIfIsSuperAdmin(user.email);
+        }
         if (data) {
           this.userData = data;
           this.userService.setUserData(data);
+        }
+
+        this.loadingService.hide();
+        if (isSuperUser) {
+          console.log('SUPERUSER');
+          this.router.navigate(['admin-page']);
         }
       }
     });

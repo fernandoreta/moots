@@ -36,22 +36,33 @@ export class UserService {
     return doc(this.firestore, 'users', uid);
   }
 
-  async getAllPartners() {
+  private getAdminUserRef(uid: string) {
+    return doc(this.firestore, 'admin-users', uid);
+  }
+
+  async getAllPartners(): Promise<IAllPartners[] | any> {
     const partnersSnapshot = await getDocs(collectionGroup(this.firestore, 'partners'));
     const partners = partnersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     return partners;
   }
 
-  async createUserDocument(user: User) {
+  async createUserDocument(user: User, isAdmin?: boolean, partner?: string) {
     this.loadingService.show();
-    const userRef = this.getUserRef(user.uid);
+    const userRef = isAdmin ? this.getAdminUserRef(user.uid) : this.getUserRef(user.uid);
   
-    const userData: IUSer = {
+    const baseData: IUSer = {
       displayName: user.displayName || '',
       email: user.email || '',
-      createdAt: new Date(),
-      partners: await this.getAllPartners()
+      createdAt: new Date()
     };
+    
+    const userData = {
+      ...baseData,
+      ...(isAdmin
+        ? { partner: partner, isAdmin: true }
+        : { partners: await this.getAllPartners() }
+      )
+    };    
   
     await setDoc(userRef, userData);
     this.loadingService.hide();
