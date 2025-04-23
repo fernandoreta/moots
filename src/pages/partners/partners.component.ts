@@ -9,15 +9,15 @@ import { IAllPartners } from '../../interfaces/user.interface';
 import { from, map, switchMap, tap } from 'rxjs';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-partners',
   imports: [
     CommonModule,
     MatCardModule,
     MatTabsModule
   ],
   standalone: true,
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+  templateUrl: './partners.component.html',
+  styleUrl: './partners.component.scss',
   animations: [
     trigger('fadeIn', [
       transition(':enter', [
@@ -27,7 +27,7 @@ import { from, map, switchMap, tap } from 'rxjs';
     ])
   ]
 })
-export class DashboardComponent implements OnInit {
+export class PartnersComponent implements OnInit {
   @Output() goToCommerce = new EventEmitter<any>();
   private auth = inject(Auth);
   private userService = inject(UserService);

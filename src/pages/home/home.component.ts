@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit {
       await this.userService.addReward(this.currentUser);
       // Get the data to update the view.
       this.userData = await this.userService.getUserData(this.currentUser);
-      this.rewards = this.userData.partners[this.partnerName]?.rewards || [];
+      // this.rewards = this.userData.partners[this.partnerName]?.rewards || [];
     }
     this.refreshStamps();
   }
@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit {
     this.userService.partnerName$.subscribe(partnerName => {
       if (partnerName) {
         this.partnerName = partnerName;
-        this.rewards = this.userData.partners[this.partnerName].rewards;
+        this.rewards = this.userData?.partners[this.partnerName].rewards;
         this.refreshStamps();
       }
     });
