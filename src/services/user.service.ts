@@ -32,11 +32,11 @@ export class UserService {
     this.partnerNameSubject.next(data);
   }
 
-  private getUserRef(uid: string) {
+  getUserRef(uid: string) {
     return doc(this.firestore, 'users', uid);
   }
 
-  private getAdminUserRef(uid: string) {
+  getAdminUserRef(uid: string) {
     return doc(this.firestore, 'admin-users', uid);
   }
 
@@ -69,10 +69,10 @@ export class UserService {
     console.log('✅ Documento creado para el usuario con estructura de negocios vacía');
   }  
 
-  async getUserData(user: User): Promise<IPartners> {
+  async getUserData(uid: string): Promise<IPartners> {
     this.loadingService.show();
     try {
-      const userRef = this.getUserRef(user.uid);
+      const userRef = this.getUserRef(uid);
       const snap = await getDoc(userRef);
   
       if (snap.exists()) {
@@ -107,10 +107,10 @@ export class UserService {
     }
   }
   
-  async addStamps(user: User, amount: number): Promise<void> {
+  async addStamps(uid: string, amount: number): Promise<void> {
     this.loadingService.show();
     try {
-      const userRef = this.getUserRef(user.uid);
+      const userRef = this.getUserRef(uid);
       const snap = await getDoc(userRef);
       if (snap.exists()) {
         const partnerId = this.partnerNameSubject.getValue();
@@ -126,9 +126,9 @@ export class UserService {
     }
   }
   
-  async addReward(user: User): Promise<void> {
+  async addReward(uid: string): Promise<void> {
     try {
-      const userRef = this.getUserRef(user.uid);
+      const userRef = this.getUserRef(uid);
       const partnerId = this.partnerNameSubject.getValue();
   
       const reward: IReward = {

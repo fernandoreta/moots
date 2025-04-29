@@ -124,7 +124,7 @@ export class ShellComponent implements OnInit {
       if (user) {
         this.currentUser = user;
         let isSuperUser = false;
-        const data = await this.userService.getUserData(user);
+        const data = await this.userService.getUserData(user.uid);
         if (user.email) {
           isSuperUser = await this.checkIfIsSuperAdmin(user.email);
         }

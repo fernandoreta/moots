@@ -28,4 +28,5 @@ export interface IAllPartners {
     activeSlots: number;
     totalSlots: number
     superuser?: string;
+    background?: string;
 }

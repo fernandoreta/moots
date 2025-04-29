@@ -43,18 +43,18 @@ export class HomeComponent implements OnInit {
   
   async modifyStar(star: number) {
     await this.userService.addPoints(this.currentUser , star);
-    this.userData = await this.userService.getUserData(this.currentUser);
+    this.userData = await this.userService.getUserData(this.currentUser.uid);
   }
 
   async modifyStamp(stamp: number) {
-    await this.userService.addStamps(this.currentUser , stamp);
-    this.userData = await this.userService.getUserData(this.currentUser);
+    await this.userService.addStamps(this.currentUser.uid, stamp);
+    this.userData = await this.userService.getUserData(this.currentUser.uid);
     if (this.userData.partners[this.partnerName].stamps === 10) {
-      await this.userService.addStamps(this.currentUser , 0);
+      await this.userService.addStamps(this.currentUser.uid, 0);
       await this.userService.addReward(this.currentUser);
       // Get the data to update the view.
-      this.userData = await this.userService.getUserData(this.currentUser);
-      // this.rewards = this.userData.partners[this.partnerName]?.rewards || [];
+      this.userData = await this.userService.getUserData(this.currentUser.uid);
+      this.rewards = this.userData.partners[this.partnerName]?.rewards || [];
     }
     this.refreshStamps();
   }

@@ -50,7 +50,7 @@ export class PartnersComponent implements OnInit {
   
       this.currentUser = user;
   
-      from(this.userService.getUserData(user)).pipe(
+      from(this.userService.getUserData(user.uid)).pipe(
         switchMap(userData =>
           from(this.userService.getAllPartners()).pipe(
             map(partners =>
