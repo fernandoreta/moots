@@ -3,26 +3,30 @@
     <h2>Partner {{ currentAdminData?.partner }}</h2>
     <mat-card class="example-card" appearance="outlined">
         <mat-card-header>
-          <mat-card-title>{{ title }}</mat-card-title>
+          <mat-card-title>
+            User:
+            {{ userData?.email ? userData?.email : title }}
+        </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p>{{longText}}</p>
+            <div *ngIf="userData">
+                <h3>Stamps</h3>
+                <mat-chip-set aria-label="Chihuahua traits">
+                    <mat-chip>{{ currentUserInfo?.stamps }} de {{ partnerInfo?.totalSlots }}</mat-chip>
+                </mat-chip-set>
+                <div>
+                    <button (click)="modifyStamp(1)">Agrega 1 ⭐️</button>
+                    <button (click)="modifyStamp(-1)">Resta 1 ⭐️</button>
+                </div>
+                <h3>Rewards</h3>
+                <mat-chip-set aria-label="Chihuahua traits">
+                    <div *ngFor="let reward of currentUserInfo?.rewards">
+                        <mat-chip>{{ reward.name }}</mat-chip>
+                    </div>
+                </mat-chip-set>
+            </div>
         </mat-card-content>
         <mat-card-footer class="example-card-footer">
-            <h3>Stamps</h3>
-            <mat-chip-set aria-label="Chihuahua traits">
-                <mat-chip>{{ currentUserInfo?.stamps }} de {{ partnerInfo?.totalSlots }}</mat-chip>
-            </mat-chip-set>
-            <div>
-                <button (click)="modifyStamp(1)">Agrega 1 ⭐️</button>
-                <button (click)="modifyStamp(-1)">Resta 1 ⭐️</button>
-            </div>
-            <h3>Rewards</h3>
-            <mat-chip-set aria-label="Chihuahua traits">
-                <div *ngFor="let reward of currentUserInfo?.rewards">
-                    <mat-chip>{{ reward.name }}</mat-chip>
-                </div>
-            </mat-chip-set>
         </mat-card-footer>
     </mat-card>
     <div class="scan-qr" (click)="scanQr()">

@@ -28,7 +28,6 @@ export class AdminPageComponent implements OnInit {
   userData!: any;
   partnerName!: string;
   partnerInfo!: IAllPartners;
-  longText = `La información del usuario se mostrara aqui.`;
   hagridId = 'HDDPgDNFAoRbEnUbr4Vk3Y7FgUN2';
   
   scanQr() {
@@ -70,7 +69,9 @@ export class AdminPageComponent implements OnInit {
 
   async ngOnInit() {
     this.loadingService.show();
-    this.userData = await this.getUserData(this.hagridId) as any;
+    if (this.hagridId) {
+      this.userData = await this.getUserData(this.hagridId) as any;
+    }
     onAuthStateChanged(this.auth, async loggedUser => {
       if (loggedUser) {
         console.log(loggedUser);
