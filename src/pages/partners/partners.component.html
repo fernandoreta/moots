@@ -1,4 +1,4 @@
-<div class="partners-container" [@fadeIn]>
+<div *ngIf="(loading$ | async) === false" class="partners-container" [@fadeIn]>
     <div *ngIf="currentUser" class="partners-content">
       <!-- CATEGORIES (abajo) -->
       <div class="bottom-section">

@@ -15,6 +15,7 @@ import { IPartner, IUSerData } from '../../interfaces/user.interface';
 import { LoadingService } from '../../services/loading.service';
 import { UserService } from '../../services/user.service';
 import { LoginComponent } from '../login/login.component';
+import { QrComponent } from '../../dialogs/qr/qr.component';
 
 @Component({
   selector: 'app-shell',
@@ -36,14 +37,15 @@ export class ShellComponent implements OnInit {
   showTabs = true;
   readonly dialog = inject(MatDialog);
   private auth = inject(Auth);
-  private loadingService = inject(LoadingService);
   partnerName = 'Home';
   isQrClicked = false;
   
   currentUser!: User;
   userData!: IUSerData;
   
-  loading$ = Inject(LoadingService).loading$;
+  private loadingService = inject(LoadingService);
+  loading$ = this.loadingService.loading$;
+
   private authInitialized = false;
   constructor(
     private router: Router,
@@ -62,6 +64,10 @@ export class ShellComponent implements OnInit {
   scanQr() {
     console.log('scan');
     this.isQrClicked = true;
+
+    this.dialog.open(QrComponent, {
+      data: { currentUser: this.currentUser },
+    });
   }
 
   onTabChange(index: number): void {

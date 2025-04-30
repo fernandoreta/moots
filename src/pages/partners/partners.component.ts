@@ -7,6 +7,7 @@ import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';
 import { IPartner } from '../../interfaces/user.interface';
 import { from, map, switchMap, tap } from 'rxjs';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-partners',
@@ -31,6 +32,8 @@ export class PartnersComponent implements OnInit {
   @Output() goToCommerce = new EventEmitter<any>();
   private auth = inject(Auth);
   private userService = inject(UserService);
+  private loadingService = inject(LoadingService);
+  loading$ = this.loadingService.loading$;
   
   currentUser!: User;
   partners!: IPartner[];
