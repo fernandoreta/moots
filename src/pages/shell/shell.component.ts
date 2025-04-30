@@ -146,6 +146,8 @@ export class ShellComponent implements OnInit {
           console.log('SUPERUSER');
           this.router.navigate(['admin-page']);
         }
+      } else {
+        this.loadingService.hide();
       }
     });
     

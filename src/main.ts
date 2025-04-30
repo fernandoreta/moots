@@ -8,6 +8,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { loadingInterceptor } from './services/loading.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -30,8 +31,7 @@ bootstrapApplication(AppComponent, {
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     importProvidersFrom(BrowserAnimationsModule),
-    provideHttpClient(
-      withInterceptors([loadingInterceptor])
-    ),
-  ]
+    provideHttpClient(withInterceptors([loadingInterceptor])),
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
+  ]  
 }).catch((err) => console.error(err));
