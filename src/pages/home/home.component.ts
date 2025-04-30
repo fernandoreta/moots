@@ -5,7 +5,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { MatButtonModule } from '@angular/material/button';
-import { IReward, IUSer } from '../../interfaces/user.interface';
+import { IReward, IUSerData } from '../../interfaces/user.interface';
+import { User } from 'firebase/auth';
 
 @Component({
   selector: 'app-home',
@@ -37,21 +38,16 @@ export class HomeComponent implements OnInit {
     { icon: 'card_giftcard', active: false }
   ];
   
-  @Input() currentUser!: any;
-  @Input() userData!: any;
+  @Input() currentUser!: User;
+  @Input() userData!: IUSerData;
   private userService = inject(UserService);
-  
-  async modifyStar(star: number) {
-    await this.userService.addPoints(this.currentUser , star);
-    this.userData = await this.userService.getUserData(this.currentUser.uid);
-  }
 
   async modifyStamp(stamp: number) {
     await this.userService.addStamps(this.currentUser.uid, stamp);
     this.userData = await this.userService.getUserData(this.currentUser.uid);
     if (this.userData.partners[this.partnerName].stamps === 10) {
       await this.userService.addStamps(this.currentUser.uid, 0);
-      await this.userService.addReward(this.currentUser);
+      await this.userService.addReward(this.currentUser.uid);
       // Get the data to update the view.
       this.userData = await this.userService.getUserData(this.currentUser.uid);
       this.rewards = this.userData.partners[this.partnerName]?.rewards || [];

@@ -1,19 +1,10 @@
-export interface IUserData {
-    stamps?: number;
-    rewards?: any[];
-}
-  
-export interface IPartners {
-    partners: {
-        [commerceId: string]: IUserData;
-    };
-}  
-export interface IUSer {
+export interface IUSerData {
     displayName: string;
     email: string;
     createdAt: Date;
-    partners?: any;
+    isAdmin?: boolean;
     partner?: string;
+    partners?: any;
 }
 
 export interface IReward {
@@ -22,11 +13,16 @@ export interface IReward {
     createdAt: string;
 }
 
-export interface IAllPartners {
+export interface IPartner {
     id: string;
     class: string;
     activeSlots: number;
     totalSlots: number
     superuser?: string;
     background?: string;
+}
+
+export interface IPartnerData {
+    stamps: number;
+    rewards: IReward[];
 }

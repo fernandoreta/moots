@@ -11,7 +11,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { PartnersComponent } from '../partners/partners.component';
 import { HomeComponent } from '../home/home.component';
-import { IAllPartners, IPartners } from '../../interfaces/user.interface';
+import { IPartner, IUSerData } from '../../interfaces/user.interface';
 import { LoadingService } from '../../services/loading.service';
 import { UserService } from '../../services/user.service';
 import { LoginComponent } from '../login/login.component';
@@ -35,12 +35,14 @@ export class ShellComponent implements OnInit {
   title = 'moots';
   showTabs = true;
   readonly dialog = inject(MatDialog);
-  currentUser!: User;
   private auth = inject(Auth);
   private loadingService = inject(LoadingService);
   partnerName = 'Home';
   isQrClicked = false;
-  userData!: IPartners;
+  
+  currentUser!: User;
+  userData!: IUSerData;
+  
   loading$ = Inject(LoadingService).loading$;
   private authInitialized = false;
   constructor(
@@ -113,7 +115,7 @@ export class ShellComponent implements OnInit {
 
   async checkIfIsSuperAdmin(userEmail: string) {
     const partners = await this.userService.getAllPartners();
-    return partners.some((partner: IAllPartners) => partner.superuser === userEmail);
+    return partners.some((partner: IPartner) => partner.superuser === userEmail);
   }
 
   ngOnInit(): void {

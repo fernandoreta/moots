@@ -1,5 +1,5 @@
 <div class="partners-container" [@fadeIn]>
-    <div class="partners-content">
+    <div *ngIf="currentUser" class="partners-content">
       <!-- CATEGORIES (abajo) -->
       <div class="bottom-section">
         <div class="carousel-container">
@@ -24,7 +24,7 @@
                   }"
                 ></div>
                 <div class="card-info">
-                  <h3 class="user-name">{{ currentUser?.displayName?.toUpperCase() }}</h3>
+                  <h3 class="user-name">{{ currentUser.displayName ? currentUser.displayName.toUpperCase() : '' }}</h3>
                   <h4 class="commerce-name">{{ commerce.id.toUpperCase() }}</h4>
                 </div>
               </div>

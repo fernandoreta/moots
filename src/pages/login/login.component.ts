@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   private auth = inject(Auth);
   private router = inject(Router);
   dialogRef = inject(MatDialogRef<LoginComponent>);
-  data = inject<any>(MAT_DIALOG_DATA);
+  data = inject<{currentUser: User}>(MAT_DIALOG_DATA);
   registerForm: FormGroup;
   formSelected = '';
   loginForm!: FormGroup;

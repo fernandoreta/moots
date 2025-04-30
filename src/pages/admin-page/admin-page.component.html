@@ -1,18 +1,20 @@
-<div class="container admin-page">
-    <h1>Welcome Admin {{ currentAdminData?.email }}</h1>
-    <h2>Partner {{ currentAdminData?.partner }}</h2>
+<div class="container admin-page" *ngIf="adminData && userData">
+    <h1>Welcome Admin {{ adminData.email }}</h1>
+    <h2>Partner {{ adminData.partner }}</h2>
     <mat-card class="example-card" appearance="outlined">
         <mat-card-header>
           <mat-card-title>
             User:
-            {{ userData?.email ? userData?.email : title }}
+            {{ userData.email ? userData.email : title }}
         </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <div *ngIf="userData">
+            <div *ngIf="userData && adminData">
                 <h3>Stamps</h3>
                 <mat-chip-set aria-label="Chihuahua traits">
-                    <mat-chip>{{ currentUserInfo?.stamps }} de {{ partnerInfo?.totalSlots }}</mat-chip>
+                    <mat-chip>
+                        {{ adminData.partner ? userData.partners[adminData.partner]?.stamps : 0 }}
+                        de {{ partnerInfo.totalSlots }}</mat-chip>
                 </mat-chip-set>
                 <div>
                     <button (click)="modifyStamp(1)">Agrega 1 ⭐️</button>
@@ -20,8 +22,10 @@
                 </div>
                 <h3>Rewards</h3>
                 <mat-chip-set aria-label="Chihuahua traits">
-                    <div *ngFor="let reward of currentUserInfo?.rewards">
-                        <mat-chip>{{ reward.name }}</mat-chip>
+                    <div *ngIf="adminData.partner && userData.partners[adminData.partner]?.rewards">
+                        <div *ngFor="let reward of userData.partners[adminData.partner].rewards">
+                            <mat-chip>{{ reward.name }}</mat-chip>
+                        </div>
                     </div>
                 </mat-chip-set>
             </div>

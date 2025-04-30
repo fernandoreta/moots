@@ -5,7 +5,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';
-import { IAllPartners } from '../../interfaces/user.interface';
+import { IPartner } from '../../interfaces/user.interface';
 import { from, map, switchMap, tap } from 'rxjs';
 
 @Component({
@@ -31,9 +31,9 @@ export class PartnersComponent implements OnInit {
   @Output() goToCommerce = new EventEmitter<any>();
   private auth = inject(Auth);
   private userService = inject(UserService);
+  
   currentUser!: User;
-
-  partners!: any;
+  partners!: IPartner[];
 
   selectCommerce(commerce: any) {
     console.log(commerce);
@@ -54,7 +54,7 @@ export class PartnersComponent implements OnInit {
         switchMap(userData =>
           from(this.userService.getAllPartners()).pipe(
             map(partners =>
-              partners.map((item: any) => ({
+              partners.map((item: IPartner) => ({
                 ...item,
                 activeSlots: userData.partners?.[item.id]?.stamps ?? 0
               }))
