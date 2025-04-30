@@ -32,7 +32,7 @@ import { LoginComponent } from '../login/login.component';
   styleUrl: './shell.component.scss'
 })
 export class ShellComponent implements OnInit {
-  title = 'moots';
+  title = 'perksy';
   showTabs = true;
   readonly dialog = inject(MatDialog);
   private auth = inject(Auth);

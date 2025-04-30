@@ -40,9 +40,12 @@
           <ng-template mat-tab-label>
             <mat-icon>home</mat-icon>
           </ng-template>
-          <app-partners
-            (goToCommerce)="goToCommerceWithData($event)">
-          </app-partners>
+          <div>
+
+            <app-partners
+              (goToCommerce)="goToCommerceWithData($event)">
+            </app-partners>
+          </div>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>

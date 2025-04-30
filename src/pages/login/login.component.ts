@@ -26,7 +26,7 @@ import { UserService } from '../../services/user.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
-  title = 'moots';
+  title = 'perksy';
   private auth = inject(Auth);
   private router = inject(Router);
   dialogRef = inject(MatDialogRef<LoginComponent>);
