@@ -12,7 +12,7 @@ export const loadingInterceptor: HttpInterceptorFn = (
     next: HttpHandlerFn
   ): Observable<HttpEvent<any>> => {
     const loadingService = inject(LoadingService);
-    loadingService.show();
+    // loadingService.show();
   
     return next(req).pipe(
       finalize(() => loadingService.hide())

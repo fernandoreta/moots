@@ -14,7 +14,7 @@
                 <mat-chip-set aria-label="Chihuahua traits">
                     <mat-chip>
                         {{ adminData.partner ? userData.partners[adminData.partner]?.stamps : 0 }}
-                        de {{ partnerInfo.totalSlots }}</mat-chip>
+                        de {{ partnerInfo?.totalSlots }}</mat-chip>
                 </mat-chip-set>
                 <div>
                     <button (click)="modifyStamp(1)">Agrega 1 ⭐️</button>
@@ -33,6 +33,7 @@
         <mat-card-footer class="example-card-footer">
         </mat-card-footer>
     </mat-card>
+    <button (click)="logout()">Cerrar Sesión</button>
     <div class="scan-qr" (click)="scanQr()">
         <img src="assets/scan-qr.png" alt="QR Code" />
     </div> 

@@ -46,7 +46,7 @@
             <clipPath id="a"><path fill="#fff" d="M0 0h982v239H0z" /></clipPath>
           </defs>
         </svg>
-        <h1>Hello<span>, {{ data.currentUser.displayName }}</span></h1>
+        <h1 *ngIf="data?.currentUser?.displayName">Hello<span>, {{ data.currentUser.displayName }}</span></h1>
         <p *ngIf="data.currentUser">Felicitaciones! Tienes iniciada sesión. 🎉</p>
         <p *ngIf="!data.currentUser">Inicia sesión para obtener recompensas. 🎉</p>
       </div>
@@ -106,7 +106,7 @@
           </button>
       
           <h2>👋 ¡Hola de nuevo!</h2>
-          <p>Ingresa tus datos para iniciar sesión.</p>
+          <p>Ingresa tus datos para iniciar la sesión.</p>
       
           <form [formGroup]="loginForm" (ngSubmit)="login()">
             <mat-form-field appearance="fill" class="full-width">
@@ -132,10 +132,7 @@
               >
                 <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
               </button>
-            </mat-form-field>            
-            <span style="color: red; margin-bottom: 10px;" *ngIf="error">
-              Oops! Alguna información esta mal!
-            </span>
+            </mat-form-field>
       
             <button mat-raised-button color="primary" class="full-width" [disabled]="loginForm.invalid">
               Iniciar sesión

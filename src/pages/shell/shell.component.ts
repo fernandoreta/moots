@@ -16,6 +16,9 @@ import { LoadingService } from '../../services/loading.service';
 import { UserService } from '../../services/user.service';
 import { LoginComponent } from '../login/login.component';
 import { QrComponent } from '../../dialogs/qr/qr.component';
+import { SnackService } from '../../services/utils.service';
+import { firebaseConfig } from '../../main';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-shell',
@@ -44,6 +47,7 @@ export class ShellComponent implements OnInit {
   userData!: IUSerData;
   
   private loadingService = inject(LoadingService);
+  private snackService = inject(SnackService);
   loading$ = this.loadingService.loading$;
 
   private authInitialized = false;
@@ -62,7 +66,6 @@ export class ShellComponent implements OnInit {
   @ViewChild('mainTabGroup') tabGroup!: MatTabGroup;
 
   scanQr() {
-    console.log('scan');
     this.isQrClicked = true;
 
     this.dialog.open(QrComponent, {
@@ -120,36 +123,77 @@ export class ShellComponent implements OnInit {
   }
 
   async checkIfIsSuperAdmin(userEmail: string) {
-    const partners = await this.userService.getAllPartners();
+    const partners = await this.userService.getAllPartnersAuthApi();
     return partners.some((partner: IPartner) => partner.superuser === userEmail);
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    console.log('shell');
     if (this.authInitialized) return;
     this.authInitialized = true;
-    this.loadingService.show();
-    onAuthStateChanged(this.auth, async user => {
-      if (user) {
-        this.currentUser = user;
-        let isSuperUser = false;
-        const data = await this.userService.getUserData(user.uid);
-        if (user.email) {
-          isSuperUser = await this.checkIfIsSuperAdmin(user.email);
+  
+    const token = localStorage.getItem('idToken');
+    if (!token) {
+     // check if is admin with auth api
+     const isBrowser = Capacitor.getPlatform() === 'web';
+     if (isBrowser) {
+       onAuthStateChanged(this.auth, async user => {
+        if (user) {
+          this.currentUser = user;
+          let isSuperUser = false;
+          const data = await this.userService.getUserDataAuthApi(user.uid);
+          if (user.email) {
+            isSuperUser = await this.checkIfIsSuperAdmin(user.email);
+          }
+          if (data) {
+            this.userData = data;
+            this.userService.setUserData(data);
+          }
+  
+          this.loadingService.hide();
+          if (isSuperUser) {
+            console.log('SUPERUSER');
+            this.router.navigate(['admin-page']);
+          }
+        } else {
+          this.loadingService.hide();
         }
-        if (data) {
-          this.userData = data;
-          this.userService.setUserData(data);
+        });
+     }
+    }
+    try {
+      const res = await fetch(
+        `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${firebaseConfig.apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idToken: token })
         }
-
-        this.loadingService.hide();
-        if (isSuperUser) {
-          console.log('SUPERUSER');
-          this.router.navigate(['admin-page']);
-        }
-      } else {
-        this.loadingService.hide();
+      );
+      const data = await res.json();
+      if (!res.ok || !data.users || data.users.length === 0) return;
+  
+      const firebaseUser = data.users[0];
+      this.loadingService.hide();
+      this.currentUser = {
+        uid: firebaseUser.localId,
+        email: firebaseUser.email,
+      } as any;
+      const userData = await this.userService.getUserData(firebaseUser.localId);
+      console.log('userData ' + JSON.stringify(userData));
+      if (userData) {
+        this.userData = userData;
+        this.userService.setUserData(userData);
       }
-    });
-    
-  }
+      const isSuperUser = await this.checkIfIsSuperAdmin(firebaseUser.email);
+      if (isSuperUser) {
+        console.log('SUPERUSER');
+        this.router.navigate(['admin-page']);
+      }
+      
+    } catch (err) {
+      this.snackService.openSnackBar();
+      this.loadingService.hide();
+    }
+  }   
 }

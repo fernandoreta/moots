@@ -10,6 +10,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { Capacitor } from '@capacitor/core';
+import { browserLocalPersistence, setPersistence } from 'firebase/auth';
+import { firebaseConfig } from '../../main';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackDialogComponent } from '../../dialogs/SnackDialog/snack-dialog.component';
+import { SnackService } from '../../services/utils.service';
 
 @Component({
   selector: 'app-login',
@@ -29,14 +35,14 @@ export class LoginComponent implements OnInit {
   title = 'perksy';
   private auth = inject(Auth);
   private router = inject(Router);
+  private snackService = inject(SnackService);
   dialogRef = inject(MatDialogRef<LoginComponent>);
   data = inject<{currentUser: User}>(MAT_DIALOG_DATA);
   registerForm: FormGroup;
   formSelected = '';
   loginForm!: FormGroup;
   hidePassword = true;
-  error = false;
-
+  
   constructor(
     private fb: FormBuilder,
     private userService: UserService
@@ -60,49 +66,101 @@ export class LoginComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  login() {
+  async loginAdmin() {
     const { email, password } = this.loginForm.value;
-  
-    signInWithEmailAndPassword(this.auth, email, password)
-      .then(async (cred) => {
-          this.dialogRef.close(cred.user);
-          this.router.navigateByUrl('');
-      })
-      .catch((error) => {
-        console.error('❌ Error al iniciar sesión:', error.message);
-      });
+    
+    try {
+      const cred = await signInWithEmailAndPassword(this.auth, email, password);
+      this.dialogRef.close(cred.user);
+      this.router.navigateByUrl('');
+    } catch (error: any) {
+      this.snackService.openSnackBar();
+    }
   }
+
+  async login() {
+    const { email, password } = this.loginForm.value;
+    if (email.includes('admin')) {
+      await this.loginAdmin();
+      return;
+    }
+    const res = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${firebaseConfig.apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          password,
+          returnSecureToken: true
+        })
+      }
+    );
+  
+    const data = await res.json();
+    if (res.ok) {
+      // 🔐 Guarda token en localStorage (✅ compatible con Capacitor iOS)
+      localStorage.setItem('idToken', data.idToken);
+  
+      this.dialogRef.close(data.email);
+      this.router.navigateByUrl('');
+      console.log('✅ Login OK', data);
+    } else {
+      this.snackService.openSnackBar();
+    }
+  }   
   
   logout() {
-    signOut(this.auth)
-      .then(() => {
-        this.data.currentUser = undefined as any;
-        this.dialogRef.close(false);
-        console.log('👋 Sesión cerrada');
-        this.router.navigateByUrl('');
-      })
-      .catch((error) => {
-        console.error('❌ Error al cerrar sesión:', error.message);
-      });
-  }
+    localStorage.removeItem('idToken');
+    this.data.currentUser = undefined as any;
+    this.dialogRef.close(false);
+    this.router.navigateByUrl('');
+    console.log('👋 Sesión cerrada');
+  }  
 
   async register() {
     const { name, email, password } = this.registerForm.value;
-
-    createUserWithEmailAndPassword(this.auth, email, password)
-    .then(async (cred) => {
-      await this.userService.createUserDocument(cred.user);
-      await updateProfile(cred.user, { displayName: name });
-      this.dialogRef.close(cred.user);
+  
+    try {
+      // Crear usuario con Firebase Auth (REST API)
+      const res = await fetch(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCyK-uH4edU0GLDxBw8556AFeYXCJTyojo',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            password,
+            returnSecureToken: true
+          })
+        }
+      );
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        this.snackService.openSnackBar();
+        throw new Error(data.error?.message || 'Error al registrar');
+      }
+  
+      const { idToken, localId } = data;
+  
+      // Guardar sesión
+      localStorage.setItem('idToken', idToken);
+  
+      // Crear documento de usuario (usando localId como UID)
+      // await this.userService.createUserDocument({ uid: localId, email, displayName: name });
+  
+      this.dialogRef.close(email);
       this.router.navigateByUrl('');
       console.log('✅ Registro exitoso:', email);
-    })
-    .catch((error) => {
-      console.error('❌ Error al registrar:', error.message);
-    });
-  }
+    } catch (error: any) {
+      this.snackService.openSnackBar();
+    }
+  }  
 
-  ngOnInit(): void {
-    console.log(this.data.currentUser);
+  ngOnInit() {
+    
   }
+  
 }

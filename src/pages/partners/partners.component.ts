@@ -47,27 +47,45 @@ export class PartnersComponent implements OnInit {
     this.goToCommerce.emit(partnerName);
   }
   
-  ngOnInit(): void {
-    onAuthStateChanged(this.auth, user => {
-      if (!user) return;
+  async ngOnInit(): Promise<void> {
+    const token = localStorage.getItem('idToken');
+    if (!token) return;
   
-      this.currentUser = user;
+    try {
+      const res = await fetch(
+        'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyCyK-uH4edU0GLDxBw8556AFeYXCJTyojo',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idToken: token })
+        }
+      );
   
-      from(this.userService.getUserData(user.uid)).pipe(
-        switchMap(userData =>
-          from(this.userService.getAllPartners()).pipe(
-            map(partners =>
-              partners.map((item: IPartner) => ({
-                ...item,
-                activeSlots: userData.partners?.[item.id]?.stamps ?? 0
-              }))
-            )
-          )
-        ),
-        tap(updatedPartners => {
-          this.partners = updatedPartners;
-        })
-      ).subscribe();
-    });
-  }
+      const data = await res.json();
+      if (data.error) {
+        console.error('❌ Error loading user from token');
+      }
+      const user = data.users?.[0];
+      if (!res.ok || !user) return;
+  
+      this.currentUser = {
+        uid: user.localId,
+        email: user.email,
+      } as any;
+      console.log('fetch user data' + user.localId);
+      const userData = await this.userService.getUserData(user.localId);
+
+      const partners = await this.userService.getAllPartners();
+  
+      this.partners = partners.map((item: IPartner) => ({
+        ...item,
+        activeSlots: userData.partners?.[item.id]?.stamps ?? 0
+      }));
+      console.log(this.partners)
+    } catch (err) {
+      console.error('❌ Error loading user from token:', err);
+    } finally {
+      this.loadingService.hide();
+    }
+  }  
 }

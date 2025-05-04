@@ -12,7 +12,7 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { loadingInterceptor } from './services/loading.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyCyK-uH4edU0GLDxBw8556AFeYXCJTyojo",
   authDomain: "moots-935b7.firebaseapp.com",
   projectId: "moots-935b7",

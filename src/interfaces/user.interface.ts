@@ -16,8 +16,8 @@ export interface IReward {
 export interface IPartner {
     id: string;
     class: string;
-    activeSlots: number;
     totalSlots: number
+    activeSlots: number;
     superuser?: string;
     background?: string;
 }

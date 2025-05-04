@@ -6,9 +6,11 @@ import { IPartner, IPartnerData, IUSerData } from '../../interfaces/user.interfa
 import { UserService } from '../../services/user.service';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { getDoc } from '@angular/fire/firestore';
-import { Auth } from '@angular/fire/auth';
+import { Auth, signOut } from '@angular/fire/auth';
 import { LoadingService } from '../../services/loading.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { SnackService } from '../../services/utils.service';
 
 @Component({
   selector: 'app-admin-page',
@@ -20,11 +22,13 @@ export class AdminPageComponent implements OnInit {
   private userService = inject(UserService);
   private auth = inject(Auth);
   private loadingService = inject(LoadingService);
+  private snackService = inject(SnackService);
   title = 'Escanea el usuario';
   adminData!: IUSerData;
   userData!: IUSerData;
-  partnerInfo!: IPartner;
+  partnerInfo!: IPartner | undefined;
   hagridId = 'HDDPgDNFAoRbEnUbr4Vk3Y7FgUN2';
+  private router = inject(Router);
   
   scanQr() {
 
@@ -68,8 +72,21 @@ export class AdminPageComponent implements OnInit {
     }
   }
 
+  logout() {
+    signOut(this.auth)
+      .then(() => {
+        // this.data.currentUser = undefined as any;
+        // this.dialogRef.close(false);
+        console.log('👋 Sesión cerrada');
+        this.router.navigateByUrl('');
+      })
+      .catch((error) => {
+        this.snackService.openSnackBar();
+      });
+  }
+
   async ngOnInit() {
-    this.loadingService.show();
+    // this.loadingService.show();
     if (this.hagridId) {
       this.userData = await this.getUserData(this.hagridId) as any;
       console.log(this.userData);
@@ -83,7 +100,7 @@ export class AdminPageComponent implements OnInit {
           // this.currentUserData = this.userData.partners[this.adminData.partner];
           // console.log(this.currentUserData);
   
-          const partners = await this.userService.getAllPartners();
+          const partners = await this.userService.getAllPartnersAuthApi();
           this.partnerInfo = partners.find((partner: IPartner) => partner.id === this.adminData.partner);
           console.log(this.partnerInfo)
           this.loadingService.hide();
