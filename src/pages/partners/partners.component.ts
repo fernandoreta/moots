@@ -43,11 +43,12 @@ export class PartnersComponent implements OnInit {
   }
 
 
-  goToTabWithData(partnerName: string) {
+  async goToTabWithData(partnerName: string) {
+    await this.setPartnerInfo();
     this.goToCommerce.emit(partnerName);
   }
-  
-  async ngOnInit(): Promise<void> {
+
+  async setPartnerInfo() {
     const token = localStorage.getItem('idToken');
     if (!token) return;
   
@@ -72,7 +73,6 @@ export class PartnersComponent implements OnInit {
         uid: user.localId,
         email: user.email,
       } as any;
-      console.log('fetch user data' + user.localId);
       const userData = await this.userService.getUserData(user.localId);
 
       const partners = await this.userService.getAllPartners();
@@ -81,11 +81,14 @@ export class PartnersComponent implements OnInit {
         ...item,
         activeSlots: userData.partners?.[item.id]?.stamps ?? 0
       }));
-      console.log(this.partners)
     } catch (err) {
       console.error('❌ Error loading user from token:', err);
     } finally {
       this.loadingService.hide();
     }
+  }
+  
+  async ngOnInit(): Promise<void> {
+    await this.setPartnerInfo();
   }  
 }

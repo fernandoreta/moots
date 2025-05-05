@@ -65,6 +65,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.userData$.subscribe(data => {
+      console.log('userData');
       if (data) {
         this.userData = data;
         if (this.partnerName) {
@@ -75,9 +76,12 @@ export class HomeComponent implements OnInit {
     this.userService.partnerName$.subscribe(partnerName => {
       if (partnerName) {
         this.partnerName = partnerName;
-        this.rewards = this.userData?.partners[this.partnerName].rewards;
-        console.log(this.rewards)
-        this.refreshStamps();
+  
+        (async () => {
+          this.userData = await this.userService.getUserData(this.currentUser.uid);
+          this.rewards = this.userData?.partners[this.partnerName]?.rewards ?? [];
+          this.refreshStamps();
+        })();
       }
     });
   }

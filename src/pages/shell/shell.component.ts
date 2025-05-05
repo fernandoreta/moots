@@ -94,10 +94,8 @@ export class ShellComponent implements OnInit {
   
   goToCommerceWithData(partnerName: string) {
     this.tabGroup.selectedIndex = 1;
-    console.log(partnerName)
     this.partnerName = partnerName;
     this.userService.setPartnerName(partnerName);
-    console.log('📦 Recibido desde partners:', partnerName);
   }
 
   login() {
@@ -184,14 +182,12 @@ export class ShellComponent implements OnInit {
         email: firebaseUser.email,
       } as any;
       const userData = await this.userService.getUserData(firebaseUser.localId);
-      console.log('userData ' + JSON.stringify(userData));
       if (userData) {
         this.userData = userData;
         this.userService.setUserData(userData);
       }
       const isSuperUser = await this.checkIfIsSuperAdmin(firebaseUser.email);
       if (isSuperUser) {
-        console.log('SUPERUSER');
         this.router.navigate(['admin-page']);
       }
       
