@@ -1,6 +1,6 @@
-import { Component, inject } from "@angular/core";
+import { Component, Inject, inject } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
-import { MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from "@angular/material/snack-bar";
+import { MAT_SNACK_BAR_DATA, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from "@angular/material/snack-bar";
 
 @Component({
     selector: 'snack-dialog.component',
@@ -17,5 +17,6 @@ import { MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef
     imports: [MatButtonModule, MatSnackBarLabel, MatSnackBarActions, MatSnackBarAction],
   })
   export class SnackDialogComponent {
+    constructor(@Inject(MAT_SNACK_BAR_DATA) public data: { message: string }) {}
     snackBarRef = inject(MatSnackBarRef);
   }

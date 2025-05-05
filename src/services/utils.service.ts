@@ -10,9 +10,12 @@ export class SnackService {
     private _snackBar = inject(MatSnackBar);
     constructor() { }
     
-    openSnackBar() {
-        this._snackBar.openFromComponent(SnackDialogComponent, {
-        duration: 5000,
-        });
+    openSnackBar(message?: string) {
+        this._snackBar.openFromComponent(
+          SnackDialogComponent,
+          {
+            duration: 5000,
+            data: { message },
+          });
     }
 }

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { deleteField, doc, Firestore, setDoc, updateDoc } from '@angular/fire/firestore';
 import { browserLocalPersistence, User } from 'firebase/auth';
-import { arrayUnion, collectionGroup, getDoc, getDocs } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, collectionGroup, getDoc, getDocs } from 'firebase/firestore';
 import { IPartner, IReward, IUSerData } from '../interfaces/user.interface';
 import { LoadingService } from './loading.service';
 import { BehaviorSubject } from 'rxjs';
@@ -152,6 +152,20 @@ export class UserService {
       this.loadingService.hide();
     }
   }
+
+  async removeReward(uid: string, reward: IReward): Promise<void> {
+    try {
+      const userRef = this.getUserRef(uid);
+      const partnerId = this.partnerNameSubject.getValue();
+  
+      await updateDoc(userRef, {
+        [`partners.${partnerId}.rewards`]: arrayRemove(reward)
+      });
+    } catch (error) {
+      this.snackService.open('Error al eliminar recompensa');
+    }
+  }
+  
   
   async addReward(uid: string): Promise<void> {
     try {

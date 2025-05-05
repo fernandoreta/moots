@@ -4,32 +4,54 @@
     <mat-card class="example-card" appearance="outlined">
         <mat-card-header>
           <mat-card-title>
-            <input type="text" />
-            <span *ngIf="userData">
+            <span>
                 User: {{ userData.email ? userData.email : title }}
             </span>
             </mat-card-title>
         </mat-card-header>
         <mat-card-content>
             <div *ngIf="userData && adminData">
-                <h3>Stamps</h3>
-                <mat-chip-set aria-label="Chihuahua traits">
-                    <mat-chip>
-                        {{ adminData.partner ? userData.partners[adminData.partner]?.stamps : 0 }}
-                        de {{ partnerInfo?.totalSlots }}</mat-chip>
-                </mat-chip-set>
-                <div>
-                    <button (click)="modifyStamp(1)">Agrega 1 ⭐️</button>
-                    <button (click)="modifyStamp(-1)">Resta 1 ⭐️</button>
-                </div>
-                <h3>Rewards</h3>
-                <mat-chip-set aria-label="Chihuahua traits">
-                    <div *ngIf="adminData.partner && userData.partners[adminData.partner]?.rewards">
-                        <div *ngFor="let reward of userData.partners[adminData.partner].rewards">
-                            <mat-chip>{{ reward.name }}</mat-chip>
+                <hr>
+                <div style="display: flex; justify-content: center;">
+                    <mat-chip-set>
+                        <mat-chip *ngIf="!loadingStamps">
+                            {{ adminData.partner ? userData.partners[adminData.partner]?.stamps : 0 }}
+                            de {{ partnerInfo?.totalSlots }}
+                        </mat-chip>
+                        <div class="loading-overlay" *ngIf="loadingStamps">
+                            <mat-spinner color="accent" diameter="50"></mat-spinner>
                         </div>
-                    </div>
-                </mat-chip-set>
+                    </mat-chip-set>
+                </div>                  
+                <div style="display: flex; justify-content: space-between; gap: 10px; max-width: 100%;">
+                    <button
+                      (click)="modifyStamp(1)"
+                      style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;"
+                    >
+                      Agrega 1 ⭐️
+                    </button>
+                    <button
+                      (click)="modifyStamp(-1)"
+                      style="padding: 10px 20px; background-color: #F44336; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;"
+                    >
+                      Resta 1 ⭐️
+                    </button>
+                </div>                                   
+                <h3>Rewards</h3>
+                <div style="display: flex; justify-content: center;">
+                    <mat-chip-set>
+                        <div *ngIf="adminData.partner && userData.partners[adminData.partner]?.rewards">
+                            <div *ngFor="let reward of userData.partners[adminData.partner].rewards">
+                                <mat-chip
+                                [removable]="true"
+                                (removed)="removeReward(reward)">
+                                {{ reward.name }}
+                                <mat-icon matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                            </div>
+                        </div>
+                    </mat-chip-set>
+                </div>
             </div>
         </mat-card-content>
         <mat-card-footer class="example-card-footer">
@@ -63,4 +85,3 @@
     </mat-card>
     <button (click)="logout()">Cerrar Sesión</button>
 </div>
-  
