@@ -76,6 +76,7 @@ export class HomeComponent implements OnInit {
       if (partnerName) {
         this.partnerName = partnerName;
         this.rewards = this.userData?.partners[this.partnerName].rewards;
+        console.log(this.rewards)
         this.refreshStamps();
       }
     });

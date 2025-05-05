@@ -12,6 +12,7 @@
 }
 
 .store-card {
+
   margin-top: 20px;
   height: 170px;
   scroll-snap-align: start;
@@ -80,11 +81,6 @@
       }
     }
   }
-
-  &.coffee-card {
-    background-color: #e94e77;
-  }
-
   &.bakery-card {
     background: linear-gradient(90deg, #fcb045, #fdc830);
     color: #333;

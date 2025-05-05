@@ -4,9 +4,11 @@
     <mat-card class="example-card" appearance="outlined">
         <mat-card-header>
           <mat-card-title>
-            User:
-            {{ userData.email ? userData.email : title }}
-        </mat-card-title>
+            <input type="text" />
+            <span *ngIf="userData">
+                User: {{ userData.email ? userData.email : title }}
+            </span>
+            </mat-card-title>
         </mat-card-header>
         <mat-card-content>
             <div *ngIf="userData && adminData">
@@ -34,7 +36,31 @@
         </mat-card-footer>
     </mat-card>
     <button (click)="logout()">Cerrar Sesión</button>
-    <div class="scan-qr" (click)="scanQr()">
-        <img src="assets/scan-qr.png" alt="QR Code" />
-    </div> 
 </div>
+
+<div class="container admin-page" *ngIf="adminData && !userData">
+    <h1>Welcome Admin {{ adminData.email }}</h1>
+    <h2>Escanea el código de usuario</h2>
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-header style="display: block;">
+        <mat-card-title>
+            <div class="scan-input">
+                <input
+                  id="scanInput"
+                  type="text"
+                  [(ngModel)]="currentId"
+                  (ngModelChange)="onScan(currentId)"
+                  placeholder="Escanea aquí el ID"
+                  autofocus
+                  style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;"
+                />
+              </div>              
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Una vez escaneado el ID válido, se cargará la información del usuario.</p>
+      </mat-card-content>
+    </mat-card>
+    <button (click)="logout()">Cerrar Sesión</button>
+</div>
+  

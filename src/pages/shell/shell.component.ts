@@ -2,9 +2,8 @@ import { Component, Inject, inject, model, OnInit, signal, ViewChild } from '@an
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, Observable } from 'rxjs';
+import { filter } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
-import {MatMenuModule} from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -27,7 +26,6 @@ import { Capacitor } from '@capacitor/core';
     MatTabsModule,
     HomeComponent,
     MatButtonModule,
-    MatMenuModule,
     MatProgressSpinnerModule,
     CommonModule,
     PartnersComponent
@@ -127,6 +125,11 @@ export class ShellComponent implements OnInit {
     return partners.some((partner: IPartner) => partner.superuser === userEmail);
   }
 
+  get username(): string {
+    const email = this.currentUser?.email?.toUpperCase();
+    return email ? email.split('@')[0] : 'Inicia Sesión';
+  }
+
   async ngOnInit(): Promise<void> {
     console.log('shell');
     if (this.authInitialized) return;
@@ -140,6 +143,7 @@ export class ShellComponent implements OnInit {
        onAuthStateChanged(this.auth, async user => {
         if (user) {
           this.currentUser = user;
+          console.log(this.currentUser)
           let isSuperUser = false;
           const data = await this.userService.getUserDataAuthApi(user.uid);
           if (user.email) {

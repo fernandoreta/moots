@@ -5,31 +5,16 @@
           <img [src]="'assets/' + partnerName + '.png'" class="icon-image" />
         </div>
         <div *ngIf="partnerName === 'Home'">
-          <img [src]="'assets/' + 'grocery.png'" class="icon-image" />
+          <img [src]="'assets/' + 'perxie_logo-noback.png'" class="icon-image" />
         </div>
-        <button
-          class="centered-button"
-          mat-icon-button
-          [matMenuTriggerFor]="menu"
-          aria-label="Example icon-button with a menu"
-        >
-          <h3 class="button-label">
-            {{ partnerName.toUpperCase() }}
-            <mat-icon>arrow_drop_down</mat-icon>
-          </h3>
+        <button class="centered-button" (click)="login()">
+          <mat-icon>person</mat-icon>
+          <span>{{ username }}</span>
         </button>
       </div>
-    
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="login()">
-          <mat-icon>dialpad</mat-icon>
-          <span>{{ currentUser ? 'Perfil' : 'Inicia Sesión' }}</span>
-        </button>
-        <button mat-menu-item disabled>
-          <mat-icon>voicemail</mat-icon>
-          <span>Check voice mail</span>
-        </button>
-      </mat-menu>
+    </div>
+    <div>
+      
     </div>
       <mat-tab-group
         #mainTabGroup
@@ -41,13 +26,12 @@
             <mat-icon>home</mat-icon>
           </ng-template>
           <div>
-
             <app-partners
               (goToCommerce)="goToCommerceWithData($event)">
             </app-partners>
           </div>
         </mat-tab>
-        <mat-tab>
+        <mat-tab *ngIf="currentUser">
           <ng-template mat-tab-label>
             <mat-icon>storefront</mat-icon>
           </ng-template>

@@ -1,7 +1,12 @@
 <main class="main">
     <div class="content">
       <div *ngIf="!formSelected" class="left-side">
-        <svg
+        <div style="display: flex;">
+          <img src="../../assets/perxie_logo-noback.png" width="70" height="70"/>
+          <h1 style="margin-top: 0.75rem;">Perxie</h1>
+        </div>
+        <!-- Angular svg logo -->
+        <!-- <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 982 239"
           fill="none"
@@ -45,9 +50,12 @@
             </linearGradient>
             <clipPath id="a"><path fill="#fff" d="M0 0h982v239H0z" /></clipPath>
           </defs>
-        </svg>
+        </svg> -->
         <h1 *ngIf="data?.currentUser?.displayName">Hello<span>, {{ data.currentUser.displayName }}</span></h1>
-        <p *ngIf="data.currentUser">Felicitaciones! Tienes iniciada sesión. 🎉</p>
+        <p *ngIf="data.currentUser">
+          Felicitaciones <strong>{{ data.currentUser.email }}! </strong>
+          Tienes iniciada sesión. 🎉
+        </p>
         <p *ngIf="!data.currentUser">Inicia sesión para obtener recompensas. 🎉</p>
       </div>
 
@@ -163,7 +171,7 @@
             Cerrar Sesión
           </button>
         </div>
-        <div class="social-links">
+        <!-- <div class="social-links">
           <a
             href="https://github.com/angular/angular"
             aria-label="Github"
@@ -223,7 +231,7 @@
               />
             </svg>
           </a>
-        </div>
+        </div> -->
       </div>
     </div>
 </main>
