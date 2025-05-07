@@ -149,6 +149,7 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('idToken', idToken);
   
       // Crear documento de usuario (usando localId como UID)
+      await this.userService.createUserDoc(name, email, localId);
       // await this.userService.createUserDocument({ uid: localId, email, displayName: name });
   
       this.dialogRef.close(email);

@@ -6,7 +6,6 @@ import { IPartner, IReward, IUSerData } from '../interfaces/user.interface';
 import { LoadingService } from './loading.service';
 import { BehaviorSubject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { getAuth, setPersistence } from '@angular/fire/auth';
 import { firebaseConfig } from '../main';
 
 @Injectable({
@@ -18,7 +17,6 @@ export class UserService {
     private loadingService: LoadingService,
     private snackService: MatSnackBar
   ) { }
-
   private firestore = inject(Firestore);
   private userDataSubject = new BehaviorSubject<any | null>(null);
   userData$ = this.userDataSubject.asObservable();
@@ -111,27 +109,48 @@ export class UserService {
     }
   }
 
-  async createUserDocument(user: User, isAdmin?: boolean, partner?: string) {
-    this.loadingService.show();
-    const userRef = isAdmin ? this.getAdminUserRef(user.uid) : this.getUserRef(user.uid);
+  async createUserDoc(userName: string, email: string, localId: string) {
+    try {
+      const projectId = firebaseConfig.projectId;
+      const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${localId}`;
+      
+      const partnersArray = (await this.getAllPartners()).map((p: any) => ({
+        mapValue: {
+          fields: {
+            id: { stringValue: p.id },
+            class: { stringValue: p.class },
+            totalSlots: { integerValue: p.totalSlots },
+            background: { stringValue: p.background || '' },
+            superuser: { stringValue: p.superuser || '' },
+            activeSlots: { integerValue: p.activeSlots || 0 }
+          }
+        }
+      }));      
+      const userDoc = {
+        fields: {
+          displayName: { stringValue: userName },
+          email: { stringValue: email },
+          createdAt: { timestampValue: new Date().toISOString() },
+          partners: {
+            arrayValue: {
+              values: partnersArray
+            }
+          }
+        }
+      };      
   
-    const baseData: IUSerData = {
-      displayName: user.displayName || '',
-      email: user.email || '',
-      createdAt: new Date()
-    };
-    
-    const userData = {
-      ...baseData,
-      ...(isAdmin
-        ? { partner: partner, isAdmin: true }
-        : { partners: await this.getAllPartners() }
-      )
-    };    
+      const docRes = await fetch(url, {
+        method: 'PATCH',
+        body: JSON.stringify(userDoc)
+      });
   
-    await setDoc(userRef, userData);
-    this.loadingService.hide();
-    console.log('✅ Documento creado para el usuario con estructura de negocios vacía');
+      if (!docRes.ok) {
+        this.snackService.open('Error Registrando');
+        throw new Error('No se pudo crear el documento del usuario');
+      }
+    } catch (error: any) {
+      this.snackService.open('Error Registrando');
+    }
   }
 
   async addStamps(uid: string, amount: number): Promise<void> {
@@ -220,6 +239,29 @@ export class UserService {
   }
 
   // Auth API
+  async createUserDocumentAuthApi(user: User, isAdmin?: boolean, partner?: string) {
+    this.loadingService.show();
+    const userRef = isAdmin ? this.getAdminUserRef(user.uid) : this.getUserRef(user.uid);
+  
+    const baseData: IUSerData = {
+      displayName: user.displayName || '',
+      email: user.email || '',
+      createdAt: new Date()
+    };
+    
+    const userData = {
+      ...baseData,
+      ...(isAdmin
+        ? { partner: partner, isAdmin: true }
+        : { partners: await this.getAllPartners() }
+      )
+    };    
+  
+    await setDoc(userRef, userData);
+    this.loadingService.hide();
+    console.log('✅ Documento creado para el usuario con estructura de negocios vacía');
+  }
+  
   async getAllPartnersAuthApi(): Promise<IPartner[] | any> {
     const partnersSnapshot = await getDocs(collectionGroup(this.firestore, 'partners'));
     const partners = partnersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
