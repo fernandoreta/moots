@@ -59,7 +59,7 @@ export class AddAdminsComponent {
         email ? email : '',
         password ? password : ''
       ).then(async (cred) => {
-        await this.userService.createUserDocument(
+        await this.userService.createUserDocumentAuthApi(
           cred.user,
           true,
           partner ? partner : ''
