@@ -70,5 +70,5 @@ We may update this Privacy Policy. When we do, we’ll update the date above. Co
 
 If you have any questions or concerns about this Privacy Policy, feel free to contact us:
 
-**Email:** perxie.support@gmail.com  
-**GitHub:** [https://github.com/tuusuario/perxie](https://github.com/tuusuario/perxie)
+**Email:** fer19_reta@hotmail.com
+**GitHub:** [https://github.com/tuusuario/perxie](https://github.com/fernandoreta)
