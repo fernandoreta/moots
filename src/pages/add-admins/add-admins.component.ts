@@ -32,7 +32,7 @@ export class AddAdminsComponent {
   });
 
   // partners$: Observable<string[]> = of(['admin', 'superadmin', 'manager']);
-  partners$: Observable<any[]> = from(this.userService.getAllPartners());
+  partners$: Observable<any[]> = from(this.userService.getAllPartnersAuthApi());
 
   constructor() {
     merge(this.email.statusChanges, this.email.valueChanges)
