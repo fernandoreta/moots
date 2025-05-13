@@ -1,9 +1,9 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.werttdev.perksy',
-  appName: 'perksy',
-  webDir: 'dist/perksy/browser'
+  appId: 'com.werttdev.perxie',
+  appName: 'perxie',
+  webDir: 'dist/perxie/browser'
 };
 
 export default config;

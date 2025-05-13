@@ -32,7 +32,7 @@ import { SnackService } from '../../services/utils.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
-  title = 'perksy';
+  title = 'Perxie';
   private auth = inject(Auth);
   private router = inject(Router);
   private snackService = inject(SnackService);

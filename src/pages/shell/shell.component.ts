@@ -34,7 +34,7 @@ import { Capacitor } from '@capacitor/core';
   styleUrl: './shell.component.scss'
 })
 export class ShellComponent implements OnInit {
-  title = 'perksy';
+  title = 'Perxie';
   showTabs = true;
   readonly dialog = inject(MatDialog);
   private auth = inject(Auth);
