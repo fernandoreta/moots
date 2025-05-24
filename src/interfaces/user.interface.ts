@@ -20,6 +20,7 @@ export interface IPartner {
     activeSlots: number;
     superuser?: string;
     background?: string;
+    monthPromo?: string;
 }
 
 export interface IPartnerData {

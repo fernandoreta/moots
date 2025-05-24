@@ -100,13 +100,28 @@ export class UserService {
             activeSlots: 0,
             totalSlots: parseInt(fields.totalSlots?.integerValue ?? '0'),
             superuser: fields.superuser?.stringValue,
-            background: fields.background?.stringValue
+            background: fields.background?.stringValue,
+            monthPromo: fields.monthPromo?.stringValue,
           };
         });
     } catch (err) {
       console.error('❌ Error getAllPartners:', err);
       return [];
     }
+  }
+
+  async deleteUserDoc() {
+    const idToken = localStorage.getItem('idToken');
+    const projectId = firebaseConfig.projectId;
+    const userId = this.extractUserIdFromToken(idToken);
+    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${userId}`;
+    await fetch(url, { method: 'DELETE' });
+  }
+
+  private extractUserIdFromToken(token: string | null): string {
+    if (!token) return '';
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.user_id || '';
   }
 
   async createUserDoc(userName: string, email: string, localId: string) {

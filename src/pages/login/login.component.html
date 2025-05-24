@@ -163,13 +163,21 @@
             (click)="formSelected = 'login'">
             Inicia Sesión
           </button>
-          <button
-            (click)="logout()"
-            mat-raised-button
-            *ngIf="data.currentUser !== undefined"
-            color="warn">
-            Cerrar Sesión
-          </button>
+          <div *ngIf="data.currentUser !== undefined">
+            <button
+              (click)="logout()"
+              mat-raised-button
+              color="warn">
+              Cerrar Sesión
+            </button>
+            <button
+              style="background-color: crimson;"
+              (click)="openDeleteAccountBox('0ms', '0ms')"
+              mat-flat-button
+              color="warn">
+              Borrar Cuenta
+            </button>
+          </div>
         </div>
         <!-- <div class="social-links">
           <a

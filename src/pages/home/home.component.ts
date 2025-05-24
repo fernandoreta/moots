@@ -5,7 +5,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { MatButtonModule } from '@angular/material/button';
-import { IReward, IUSerData } from '../../interfaces/user.interface';
+import { IPartner, IReward, IUSerData } from '../../interfaces/user.interface';
 import { User } from 'firebase/auth';
 
 @Component({
@@ -25,6 +25,8 @@ export class HomeComponent implements OnInit {
   maxPoints = 100;
   partnerName = '';
   rewards: Array<IReward> = [];
+  monthPromo!: string | undefined;
+  currentMonth!: string;
   stamps = [
     { number: 1, active: false },
     { number: 2, active: false },
@@ -65,7 +67,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.userData$.subscribe(data => {
-      console.log('userData');
       if (data) {
         this.userData = data;
         if (this.partnerName) {
@@ -79,10 +80,18 @@ export class HomeComponent implements OnInit {
   
         (async () => {
           this.userData = await this.userService.getUserData(this.currentUser.uid);
+          const partners = await this.userService.getAllPartners() as IPartner[];
+          partners.find(partner => {
+            if (partner.id === this.partnerName) {
+              this.monthPromo = partner.monthPromo;
+            }
+          });
           this.rewards = this.userData?.partners[this.partnerName]?.rewards ?? [];
           this.refreshStamps();
         })();
       }
     });
+    const date = new Date();
+    this.currentMonth = date.toLocaleString('es-MX', { month: 'long' })
   }
 }
