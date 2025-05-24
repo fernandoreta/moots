@@ -18,11 +18,11 @@
             >
               <div (click)="goToTabWithData(commerce.id)" class="store-content">
                 <div
-                  class="company-logo"
-                  [ngStyle]="{
-                    'background-image': 'url(assets/' + commerce.id + '.png' + ')'
-                  }"
-                ></div>
+                    class="company-logo"
+                    [ngStyle]="{
+                      'background-image': 'url(' + getLogoUrl(commerce.id) + ')'
+                    }"
+                  ></div>
                 <div class="card-info">
                   <h3 class="user-name">{{ currentUser.displayName ? currentUser.displayName.toUpperCase() : '' }}</h3>
                   <h4 class="commerce-name">{{ commerce.id.toUpperCase() }}</h4>

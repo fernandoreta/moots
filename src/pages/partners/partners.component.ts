@@ -42,6 +42,9 @@ export class PartnersComponent implements OnInit {
     console.log(commerce);
   }
 
+  getLogoUrl(commerceId: string): string {
+    return `https://raw.githubusercontent.com/fernandoreta/moots/1.0.0/src/assets/logos/${commerceId}.png`;
+  }
 
   async goToTabWithData(partnerName: string) {
     await this.setPartnerInfo();
