@@ -1,0 +1,60 @@
+<div class="container body-border">
+  <h3 class="stamps-title">🤩 STAMPS</h3>
+  <div class="points-card mat-elevation-z2">
+    <ng-container *ngIf="currentUser && userData; else noUser">
+      <div class="progress-grid">
+        <button mat-icon-button *ngFor="let stamp of stamps" [ngClass]="{
+          'active': stamp.active,
+          'gift': stamp.icon === 'card_giftcard'
+        }">
+          <mat-icon *ngIf="stamp.icon">{{ stamp.icon }}</mat-icon>
+          <span *ngIf="!stamp.icon">{{ stamp.number }}</span>
+        </button>
+      </div>
+      <p>🌟 Obten un STAMP en cada visita!</p>
+    </ng-container>
+  
+    <ng-template #noUser>
+      <p>Bienvenido 👋</p>
+      <p>Inicia sesión para comenzar a acumular puntos.</p>      
+    </ng-template>
+  </div>
+
+  <h3 class="stamps-title">🏅 Rewards</h3>
+  <div *ngIf="currentUser && userData" class="points-card mat-elevation-z2">
+      <div>
+        <div class="reward-container" *ngIf="rewards.length > 0">
+          <div *ngFor="let reward of rewards">
+            <div class="icon-circle">
+              <mat-icon>card_giftcard</mat-icon>
+            </div>
+            <div class="reward-text">
+              <div class="title">{{ reward }}</div>
+              <div class="subtitle">❤️</div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="rewards.length === 0">
+          <div>
+            <mat-icon>warning</mat-icon>
+          </div>
+          <div class="reward-text">
+            <div class="title">Ningun Reward ❤️‍🩹</div>
+            <div class="subtitle">Acumula puntos para ganar premios 🏅</div>
+          </div>
+        </div>
+
+      </div> 
+  </div>
+
+  <h3 class="stamps-title">🥳 Promos</h3>
+  <div class="promo-card mat-elevation-z2">
+    <div class="promo-text">
+      <h3>Oferta de {{ currentMonth }}</h3>
+      <p>{{ monthPromo }}!</p>
+    </div>
+    <mat-icon class="promo-icon">local_cafe</mat-icon>
+  </div>
+</div>
+  

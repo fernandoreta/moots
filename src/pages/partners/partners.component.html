@@ -1,0 +1,71 @@
+<div *ngIf="(loading$ | async) === false" class="partners-container" [@fadeIn]>
+    <div *ngIf="currentUser" class="partners-content">
+      <!-- CATEGORIES (abajo) -->
+      <div class="bottom-section">
+        <div class="carousel-container">
+          <div
+            class="carousel-track"
+            [ngStyle]="{
+              display: 'flex',
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+              gap: '1rem'
+            }"
+          >
+            <mat-card
+              *ngFor="let commerce of partners"
+              class="store-card {{ commerce.class }}"
+            >
+              <div (click)="goToTabWithData(commerce.id)" class="store-content">
+                <div
+                    class="company-logo"
+                    [ngStyle]="{
+                      'background-image': 'url(' + getLogoUrl(commerce.id) + ')'
+                    }"
+                  ></div>
+                <div class="card-info">
+                  <h3 class="user-name">{{ currentUser.displayName ? currentUser.displayName.toUpperCase() : '' }}</h3>
+                  <h4 class="commerce-name">{{ commerce.id.toUpperCase() }}</h4>
+                </div>
+              </div>
+              <div class="perforations">
+                <span
+                  *ngFor="let slot of [].constructor(commerce.totalSlots); let i = index"
+                  class="dot"
+                  [class.active]="i < commerce.activeSlots"
+                ></span>
+              </div>
+            </mat-card>
+          </div>
+        </div>        
+      </div>
+    </div>
+    <div *ngIf="!currentUser" class="partners-content">
+      <div class="bottom-section">
+        <div class="carousel-container">
+          <div
+            class="carousel-track"
+            [ngStyle]="{
+              display: 'flex',
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+              gap: '1rem'
+            }"
+          >
+            <mat-card class="store-card login-card">
+              <div class="store-content">
+                <!-- <div class="company-logo" [ngStyle]="{ 'background-image': 'url(assets/login.png)' }"></div> -->
+                <div class="card-info">
+                  <h3 class="user-name" style="color: black;">¡Hola!</h3>
+                  <h4 class="commerce-name" style="color: black;">
+                    Inicia sesión para ver tus recompensas y nuestros afiliados.
+                  </h4>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>    
+</div>
+  

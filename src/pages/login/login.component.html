@@ -1,7 +1,12 @@
 <main class="main">
     <div class="content">
-      <div class="left-side">
-        <svg
+      <div *ngIf="!formSelected" class="left-side">
+        <div style="display: flex;">
+          <img src="../../assets/perxie_logo-noback.png" width="70" height="70"/>
+          <h1 style="margin-top: 0.75rem;">Perxie</h1>
+        </div>
+        <!-- Angular svg logo -->
+        <!-- <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 982 239"
           fill="none"
@@ -45,21 +50,136 @@
             </linearGradient>
             <clipPath id="a"><path fill="#fff" d="M0 0h982v239H0z" /></clipPath>
           </defs>
-        </svg>
-        <h1>Hello, {{ title }}</h1>
-        <p>Congratulations! Your app is running. 🎉</p>
-        <div class="example-button-row">
-          <button (click)="login()" mat-raised-button color="primary">
-            Login
+        </svg> -->
+        <h1 *ngIf="data?.currentUser?.displayName">Hello<span>, {{ data.currentUser.displayName }}</span></h1>
+        <p *ngIf="data.currentUser">
+          Felicitaciones <strong>{{ data.currentUser.email }}! </strong>
+          Tienes iniciada sesión. 🎉
+        </p>
+        <p *ngIf="!data.currentUser">Inicia sesión para obtener recompensas. 🎉</p>
+      </div>
+
+      <div class="register-wrapper" *ngIf="formSelected === 'register'">
+        <div class="register-card mat-elevation-z3">
+          <!-- Botón para cerrar el formulario -->
+          <button mat-icon-button class="close-btn" (click)="formSelected = ''" aria-label="Cerrar">
+            <mat-icon>close</mat-icon>
           </button>
-          <button (click)="logout()" mat-raised-button color="warn">
-            Cerrar Sesión
-          </button>
+      
+          <h2>👋 ¡Bienvenido!</h2>
+          <p>Por favor, crea tu cuenta para continuar.</p>
+      
+          <form [formGroup]="registerForm" (ngSubmit)="register()">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="name" placeholder="Tu nombre" />
+            </mat-form-field>
+      
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email" placeholder="tucorreo@ejemplo.com" />
+            </mat-form-field>
+      
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Contraseña</mat-label>
+              <input
+                matInput
+                formControlName="password"
+                [type]="hidePassword ? 'password' : 'text'"
+                type="password"
+                placeholder="********" />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hidePassword = !hidePassword"
+                [attr.aria-label]="'Mostrar u ocultar contraseña'"
+                [attr.aria-pressed]="!hidePassword"
+                type="button"
+              >
+                <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </mat-form-field>
+      
+            <button mat-raised-button color="primary" class="full-width" [disabled]="registerForm.invalid">
+              Registrarse
+            </button>
+          </form>
         </div>
       </div>
+      
+      <div class="register-wrapper" *ngIf="formSelected === 'login'">
+        <div class="register-card mat-elevation-z3">
+          <button mat-icon-button class="close-btn" (click)="formSelected = ''" aria-label="Cerrar">
+            <mat-icon>close</mat-icon>
+          </button>
+      
+          <h2>👋 ¡Hola de nuevo!</h2>
+          <p>Ingresa tus datos para iniciar la sesión.</p>
+      
+          <form [formGroup]="loginForm" (ngSubmit)="login()">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email" placeholder="tucorreo@ejemplo.com" />
+            </mat-form-field>
+      
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Contraseña</mat-label>
+              <input
+                matInput
+                [type]="hidePassword ? 'password' : 'text'"
+                formControlName="password"
+                placeholder="********"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hidePassword = !hidePassword"
+                [attr.aria-label]="'Mostrar u ocultar contraseña'"
+                [attr.aria-pressed]="!hidePassword"
+                type="button"
+              >
+                <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </mat-form-field>
+      
+            <button mat-raised-button color="primary" class="full-width" [disabled]="loginForm.invalid">
+              Iniciar sesión
+            </button>
+          </form>
+        </div>
+      </div>
+
       <div class="divider" role="separator" aria-label="Divider"></div>
+      <u *ngIf="!formSelected && !data.currentUser"
+        style="cursor: pointer;"
+        (click)="formSelected = 'register'" class="register">
+        Aún no estás registrado?
+      </u>
       <div class="right-side">
-        <div class="social-links">
+        <div class="example-button-row">
+          <button
+            *ngIf="!formSelected && !data?.currentUser"
+            mat-flat-button color="primary"
+            (click)="formSelected = 'login'">
+            Inicia Sesión
+          </button>
+          <div *ngIf="data.currentUser !== undefined">
+            <button
+              (click)="logout()"
+              mat-raised-button
+              color="warn">
+              Cerrar Sesión
+            </button>
+            <button
+              style="background-color: crimson;"
+              (click)="openDeleteAccountBox('0ms', '0ms')"
+              mat-flat-button
+              color="warn">
+              Borrar Cuenta
+            </button>
+          </div>
+        </div>
+        <!-- <div class="social-links">
           <a
             href="https://github.com/angular/angular"
             aria-label="Github"
@@ -119,7 +239,7 @@
               />
             </svg>
           </a>
-        </div>
+        </div> -->
       </div>
     </div>
 </main>

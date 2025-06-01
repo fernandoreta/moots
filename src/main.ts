@@ -3,26 +3,35 @@ import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideZoneChangeDetection } from '@angular/core';
+import { importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { routes } from './app/app.routes';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { loadingInterceptor } from './services/loading.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAcifCX9yUoJD51IX-oz0rNyRDfCFIXbRU",
-  authDomain: "localsporty-dd525.firebaseapp.com",
-  databaseURL: "https://localsporty-dd525-default-rtdb.firebaseio.com",
-  projectId: "localsporty-dd525",
-  storageBucket: "localsporty-dd525.firebasestorage.app",
-  messagingSenderId: "715512929291",
-  appId: "1:715512929291:web:de547d7e340e6f2cc5bb0e",
-  measurementId: "G-CLTF2B9CB1"
+export const firebaseConfig = {
+  apiKey: "AIzaSyCyK-uH4edU0GLDxBw8556AFeYXCJTyojo",
+  authDomain: "moots-935b7.firebaseapp.com",
+  projectId: "moots-935b7",
+  storageBucket: "moots-935b7.firebasestorage.app",
+  messagingSenderId: "1036093463652",
+  appId: "1:1036093463652:web:fb4337f0728f0d40a21371",
+  measurementId: "G-ZPF4MYTJ0H"
 };
 
 bootstrapApplication(AppComponent, {
   ...appConfig,
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter([]),
+    provideRouter(routes),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
-    provideAuth(() => getAuth())
-  ]
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    importProvidersFrom(BrowserAnimationsModule),
+    provideHttpClient(withInterceptors([loadingInterceptor])),
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
+  ]  
 }).catch((err) => console.error(err));

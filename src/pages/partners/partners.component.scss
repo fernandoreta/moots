@@ -1,0 +1,186 @@
+.carousel-container {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  // padding: 16px 0;
+}
+
+.carousel-track {
+  // display: flex; // commented to use vertical instead of horizontal in cards.
+  gap: 16px;
+  padding-left: 16px;
+}
+
+.store-card {
+
+  margin-top: 20px;
+  height: 170px;
+  scroll-snap-align: start;
+  min-width: 280px;
+  max-width: 300px;
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  .store-content {
+    // Commented to see the logo all over the card
+    // position: relative;
+    z-index: 2;
+  }
+
+  .company-logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.8;
+    z-index: 1;
+  }
+
+  .card-info {
+    position: relative;
+    z-index: 2;
+
+    .user-name {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .commerce-name {
+      margin: 4px 0 0;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+
+  .perforations {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #4b0082;
+      opacity: 0.3;
+
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
+  &.bakery-card {
+    background: linear-gradient(90deg, #fcb045, #fdc830);
+    color: #333;
+  }
+
+  &.nespresso-card {
+    background-color: #8e44ad;
+  }
+}
+
+
+.partners-container {
+    height: 100vh; // Toda la pantalla
+    overflow: hidden;
+    
+    .partners-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  
+    .top-section {
+      height: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+  
+      .popular-card {
+        flex-shrink: 0;
+        background-color: #7cb8c3;
+      }
+    }
+  
+    .bottom-section {
+      overflow-y: auto;
+    }
+  
+    .vertical-store-list {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0;
+  
+      .store-card {
+        position: relative;
+        width: 90%;
+        margin: 0;
+        margin-bottom: 12px;
+        border-radius: 20px 0 0 20px;
+        padding: 20px;
+        color: #fff;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        .store-content {
+          font-size: 16px;
+          width: 100%;
+        }
+  
+        .perforations {
+          position: absolute;
+          bottom: -5px;
+          left: 12px;
+          right: 12px;
+          display: flex;
+          justify-content: space-between;
+          pointer-events: none;
+  
+          .dot {
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            transition: background-color 0.3s, opacity 0.3s;
+          
+            &.active {
+              background-color: #fff;
+              opacity: 1;
+            }
+          }          
+        }
+  
+        &.coffee-card {
+          background-color: #e94e77;
+        }
+  
+        &.bakery-card {
+          background: linear-gradient(90deg, #fcb045, #fdc830);
+          color: #333;
+        }
+  
+        &.nespresso-card {
+          background-color: #8e44ad;
+        }
+      }
+    }
+  }
+  

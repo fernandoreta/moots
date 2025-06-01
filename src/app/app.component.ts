@@ -1,12 +1,23 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { RouterModule } from "@angular/router";
+import { Capacitor } from "@capacitor/core";
+import { browserLocalPersistence, setPersistence, getAuth, inMemoryPersistence } from 'firebase/auth';
+import { UserService } from "../services/user.service";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [
+    RouterModule
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
-  title = 'moots';
+export class AppComponent implements OnInit {
+  
+  constructor(private user: UserService) {}
+
+
+  async ngOnInit() {
+    
+  }
 }

@@ -1,0 +1,126 @@
+::ng-deep {
+    .mat-mdc-tab-body-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 70vh;
+      }
+}
+  
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 56px; // igual al alto del mat-tab-group
+  }  
+  .bottom-tab-group {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgb(229, 225, 221);
+    z-index: 1000;
+    border-radius: 50px 50px 0 0;
+    margin-top: 20px;
+  }  
+  
+  .bottom-tabs {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-radius: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-around;
+  
+    a {
+      flex-direction: column;
+      font-size: 12px;
+      color: white;
+      text-align: center;
+      padding: 0.5rem 0;
+    }
+  
+    mat-icon {
+      font-size: 20px;
+    }
+  }
+
+  .content {
+    display: flex;
+  }
+  
+  .header {
+    position: fixed;
+    top: 45px; // iphone notch.
+    left: 0;
+    width: 100%;
+    height: 30%;
+    background: linear-gradient(to bottom, white, darkkhaki);
+    z-index: 101;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+    font-weight: bold;
+    font-size: 18px;
+  }  
+
+  @keyframes pulse {
+    0% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.15); }
+    100% { transform: translateX(-50%) scale(1); }
+  }
+  
+  .scan-qr.clicked {
+    animation: pulse 0.4s ease;
+  }  
+  
+  .centered-button {
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    // box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    width: 120px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    background: none;
+    text-decoration: underline;
+    text-decoration-color: black;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+  
+  .icon-image {
+    height: 115px;
+    width: 120px;
+  }
+  
+  .button-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .button-label {
+    margin-top: -15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }  
+  
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(1px); // 🔥 esto genera el blur detrás
+    background-color: rgba(255, 255, 255, 0.3); // semitransparente
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  

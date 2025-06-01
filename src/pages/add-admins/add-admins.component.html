@@ -1,0 +1,45 @@
+<div class="container example-container" [formGroup]="form">
+    <h1>Add Admin User</h1>
+  
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        formControlName="email"
+        placeholder="pat@example.com"
+        (blur)="updateErrorMessage()"
+        required
+      />
+      <mat-error *ngIf="email.invalid && email.touched">
+        {{ errorMessage() }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          formControlName="password"
+          required
+        />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          required
+        />
+    </mat-form-field>
+    <mat-form-field *ngIf="partners$ | async as partners">
+        <mat-label>Select Partner</mat-label>
+        <mat-select formControlName="partner">
+          <mat-option *ngFor="let partner of partners" [value]="partner.id">
+            {{ partner.id }}
+          </mat-option>
+        </mat-select>
+    </mat-form-field>      
+    <button mat-raised-button color="primary button" (click)="submitForm()" [disabled]="form.invalid">
+      Submit
+    </button>
+</div>
+  

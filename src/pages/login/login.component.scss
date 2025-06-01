@@ -92,7 +92,6 @@
 
   .divider {
     width: 1px;
-    background: var(--red-to-pink-to-purple-vertical-gradient);
     margin-inline: 0.5rem;
   }
 
@@ -169,7 +168,51 @@
     .divider {
       height: 1px;
       width: 100%;
-      background: var(--red-to-pink-to-purple-horizontal-gradient);
       margin-block: 1.5rem;
     }
   }
+
+  .register-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+  
+  .register-card {
+    background: #fff8f0;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  
+    h2 {
+      margin-bottom: 0.5rem;
+    }
+  
+    p {
+      margin-bottom: 1.5rem;
+      font-size: 14px;
+      color: #555;
+    }
+  
+    .full-width {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .register {
+    margin-bottom: 20px;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+    color: #555;
+  }
+  
+  

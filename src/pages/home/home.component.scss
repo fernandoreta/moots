@@ -1,0 +1,100 @@
+  .body-border {
+    border-radius: 50px 50px 0 0;
+  }
+
+  .stamps-title {
+    text-align: center;
+    margin: 3px;
+    font-size: 1.5rem;
+  }
+  
+  .points-card {
+    background: white;
+    color: black;
+    border-radius: 16px;
+    padding: 1rem;
+    text-align: center;
+    height: auto;
+  }
+  
+  .promo-card {
+    background: #ffcc80;
+    border-radius: 16px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .promo-icon {
+    color: #5d4037;
+  }
+  
+  .progress-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 40px);
+    grid-gap: 10px;
+    justify-content: center;
+    margin: 20px auto;
+  
+    button {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #333;
+      background-color: white;
+      color: #999;
+      font-weight: bold;
+      font-size: 16px;
+  
+      &.active {
+        background-color: #333;
+        color: white;
+      }
+  
+      &.gift {
+        color: #999;
+        border-color: #999;
+      }
+  
+      mat-icon {
+        font-size: 20px;
+      }
+    }
+  }
+  
+  .reward-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: Roboto, sans-serif;
+  
+    .icon-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 8px solid #4EC9B0; // turquesa
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+  
+      mat-icon {
+        font-size: 24px;
+        color: #000;
+      }
+    }
+  
+    .reward-text {
+      .title {
+        font-weight: 500;
+        color: #333;
+      }
+  
+      .subtitle {
+        font-size: 13px;
+        color: #666;
+      }
+    }
+  }
+  
