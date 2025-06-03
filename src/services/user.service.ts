@@ -137,7 +137,8 @@ export class UserService {
             totalSlots: { integerValue: p.totalSlots },
             background: { stringValue: p.background || '' },
             superuser: { stringValue: p.superuser || '' },
-            activeSlots: { integerValue: p.activeSlots || 0 }
+            activeSlots: { integerValue: p.activeSlots || 0 },
+            rewards: { arrayValue: { values: [] } }
           }
         }
       }));      
@@ -168,17 +169,25 @@ export class UserService {
     }
   }
 
-  async addStamps(uid: string, amount: number): Promise<void> {
+  async addStamps(uid: string, amount: number, userData: IUSerData): Promise<void> {
     this.loadingService.show();
     try {
       const userRef = this.getUserRef(uid);
       const snap = await getDoc(userRef);
       if (snap.exists()) {
         const partnerId = this.partnerNameSubject.getValue();
-        const current = snap.data()['partners'][partnerId]['stamps'] ?? 0;
-        await updateDoc(userRef, {
-          [`partners.${partnerId}.stamps`]: amount !== 0 ? current + amount : 0
-        });
+        const partners = userData.partners || [];
+        const partnerIndex = partners.findIndex((p: any) => p.id === partnerId);
+        if (partnerIndex !== -1) {
+          const updatedPartners = [...partners];
+          updatedPartners[partnerIndex] = {
+            ...updatedPartners[partnerIndex],
+            activeSlots: amount,
+          };
+          await updateDoc(userRef, {
+            partners: updatedPartners,
+          });
+        }
       }
     } catch (error) {
       this.snackService.open('Error al agregar sellos');
@@ -199,26 +208,31 @@ export class UserService {
       this.snackService.open('Error al eliminar recompensa');
     }
   }
-  
-  
-  async addReward(uid: string): Promise<void> {
+
+  async addReward(uid: string, reward: IReward, userData: IUSerData): Promise<void> {
     try {
       const userRef = this.getUserRef(uid);
       const partnerId = this.partnerNameSubject.getValue();
-  
-      const reward: IReward = {
-        name: 'Café gratis',
-        claimed: false,
-        createdAt: new Date().toISOString(),
-      };
-  
-      await updateDoc(userRef, {
-        [`partners.${partnerId}.rewards`]: arrayUnion(reward)
-      });
+      const partners = userData.partners || [];
+      const partnerIndex = partners.findIndex((p: any) => p.id === partnerId);
+
+      if (partnerIndex !== -1) {
+        const updatedPartners = [...partners];
+        const currentRewards = updatedPartners[partnerIndex].rewards || [];
+        updatedPartners[partnerIndex] = {
+          ...updatedPartners[partnerIndex],
+          rewards: [...currentRewards, reward]
+        };
+
+        await updateDoc(userRef, {
+          partners: updatedPartners
+        });
+      }
     } catch (error) {
       this.snackService.open('Error al agregar recompensa');
     }
   }
+
   
   async updateUser(user: User, data: any): Promise<void> {
     this.loadingService.show();

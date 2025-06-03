@@ -44,18 +44,18 @@ export class HomeComponent implements OnInit {
   @Input() userData!: IUSerData;
   private userService = inject(UserService);
 
-  async modifyStamp(stamp: number) {
-    await this.userService.addStamps(this.currentUser.uid, stamp);
-    this.userData = await this.userService.getUserData(this.currentUser.uid);
-    if (this.userData.partners[this.partnerName].stamps === 10) {
-      await this.userService.addStamps(this.currentUser.uid, 0);
-      await this.userService.addReward(this.currentUser.uid);
-      // Get the data to update the view.
-      this.userData = await this.userService.getUserData(this.currentUser.uid);
-      this.rewards = this.userData.partners[this.partnerName]?.rewards || [];
-    }
-    this.refreshStamps();
-  }
+  // async modifyStamp(stamp: number) {
+  //   await this.userService.addStamps(this.currentUser.uid, stamp);
+  //   this.userData = await this.userService.getUserData(this.currentUser.uid);
+  //   if (this.userData.partners[this.partnerName].stamps === 10) {
+  //     await this.userService.addStamps(this.currentUser.uid, 0);
+  //     await this.userService.addReward(this.currentUser.uid);
+  //     // Get the data to update the view.
+  //     this.userData = await this.userService.getUserData(this.currentUser.uid);
+  //     this.rewards = this.userData.partners[this.partnerName]?.rewards || [];
+  //   }
+  //   this.refreshStamps();
+  // }
 
   private refreshStamps() {
     this.stamps.forEach(stamp => {

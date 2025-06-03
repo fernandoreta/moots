@@ -8,9 +8,9 @@ export interface IUSerData {
 }
 
 export interface IReward {
-    name: string;
-    claimed: boolean;
+    name?: string;
     createdAt: string;
+    claimed?: boolean;
 }
 
 export interface IPartner {
@@ -21,6 +21,7 @@ export interface IPartner {
     superuser?: string;
     background?: string;
     monthPromo?: string;
+    reward?: string;
 }
 
 export interface IPartnerData {

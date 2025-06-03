@@ -39,6 +39,9 @@ export class AdminPageComponent implements OnInit {
   adminData!: IUSerData;
   userData!: IUSerData;
   partnerInfo!: IPartner | undefined;
+  currentStamps!: number;
+  selectedUserPartner!: IPartner;
+  partners!: IPartner[];
   // hagridId = 'HDDPgDNFAoRbEnUbr4Vk3Y7FgUN2';
   currentId!: string;
   private router = inject(Router);
@@ -52,14 +55,26 @@ export class AdminPageComponent implements OnInit {
 
   async modifyStamp(stamp: number) {
     this.loadingStamps = true;
-    await this.userService.addStamps(this.currentId, stamp);
+    console.log(this.partnerInfo);
+    await this.userService.addStamps(
+      this.currentId,
+      this.selectedUserPartner.activeSlots + stamp,
+      this.userData
+    );
     // Get the data to update the view.
     await this.loadUserDataById(this.currentId);
     if (this.adminData.partner) {
-      if (this.userData.partners[this.adminData.partner].stamps === this.partnerInfo?.totalSlots) {
-        await this.userService.addStamps(this.currentId, 0);
-        await this.userService.addReward(this.currentId);
-        this.userData.partners[this.adminData.partner].rewards = this.userData.partners[this.adminData.partner]?.rewards || [];
+      const partnerIndex = this.userData.partners.findIndex((p: IPartner) => p.id === this.adminData.partner);
+      if (this.userData.partners[partnerIndex].activeSlots === this.partnerInfo?.totalSlots) {
+        await this.userService.addStamps(this.currentId, 0, this.userData);
+        // load data before you update the rewards/
+        await this.loadUserDataById(this.currentId);
+        const reward: IReward = {
+          name: this.partnerInfo?.reward,
+          createdAt: new Date().toISOString(),
+        }
+        await this.userService.addReward(this.currentId, reward, this.userData);
+        // this.userData.partners[partnerIndex].rewards = this.userData.partners[partnerIndex]?.rewards || [];
         await this.loadUserDataById(this.currentId);
       }
       this.loadingStamps = false;
@@ -99,6 +114,11 @@ export class AdminPageComponent implements OnInit {
 
   private async loadUserDataById(id: string) {
     this.userData = await this.getUserData(id);
+    this.selectedUserPartner = this.userData.partners.find((partner: IPartner | any) => {
+      if(partner.id === this.partnerInfo?.id) {
+        return partner;
+      }
+    });
   }
 
   onScan(id: string) {
@@ -112,16 +132,16 @@ export class AdminPageComponent implements OnInit {
   }
 
   async ngOnInit() {
-    if (this.currentId) {
-      await this.loadUserDataById(this.currentId);
-    }
+    // if (this.currentId) {
+    //   await this.loadUserDataById(this.currentId);
+    // }
     onAuthStateChanged(this.auth, async loggedUser => {
       if (loggedUser) {
         this.adminData = await this.getAdminUserData(loggedUser.uid);
         if (this.adminData.partner) {
           this.userService.setPartnerName(this.adminData.partner);
-          const partners = await this.userService.getAllPartnersAuthApi();
-          this.partnerInfo = partners.find((partner: IPartner) => partner.id === this.adminData.partner);
+          this.partners = await this.userService.getAllPartnersAuthApi();
+          this.partnerInfo = this.partners.find((partner: IPartner) => partner.id === this.adminData.partner);
         }
       }
     });

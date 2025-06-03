@@ -15,8 +15,8 @@
                 <div style="display: flex; justify-content: center;">
                     <mat-chip-set>
                         <mat-chip *ngIf="!loadingStamps">
-                            {{ adminData.partner ? userData.partners[adminData.partner]?.stamps : 0 }}
-                            de {{ partnerInfo?.totalSlots }}
+                          {{ selectedUserPartner.activeSlots }} de
+                          {{ selectedUserPartner.totalSlots }}
                         </mat-chip>
                         <div class="loading-overlay" *ngIf="loadingStamps">
                             <mat-spinner color="accent" diameter="50"></mat-spinner>
