@@ -40,8 +40,8 @@
                 <h3>Rewards</h3>
                 <div style="display: flex; justify-content: center;">
                     <mat-chip-set>
-                        <div *ngIf="adminData.partner && userData.partners[adminData.partner]?.rewards">
-                            <div *ngFor="let reward of userData.partners[adminData.partner].rewards">
+                        <div *ngIf="adminData.partner && rewards">
+                            <div *ngFor="let reward of rewards">
                                 <mat-chip
                                 [removable]="true"
                                 (removed)="removeReward(reward)">

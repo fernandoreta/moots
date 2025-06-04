@@ -42,13 +42,14 @@ export class AdminPageComponent implements OnInit {
   currentStamps!: number;
   selectedUserPartner!: IPartner;
   partners!: IPartner[];
+  rewards!: IReward[] | undefined;
   // hagridId = 'HDDPgDNFAoRbEnUbr4Vk3Y7FgUN2';
   currentId!: string;
   private router = inject(Router);
   private scanTimeout: any;
 
   async removeReward(rewardToRemove: IReward) {
-    await this.userService.removeReward(this.currentId, rewardToRemove);
+    await this.userService.removeReward(this.currentId, rewardToRemove, this.userData);
     this.loadUserDataById(this.currentId);
   }
   
@@ -119,6 +120,7 @@ export class AdminPageComponent implements OnInit {
         return partner;
       }
     });
+    this.rewards = this.selectedUserPartner.rewards;
   }
 
   onScan(id: string) {

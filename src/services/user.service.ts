@@ -196,14 +196,31 @@ export class UserService {
     }
   }
 
-  async removeReward(uid: string, reward: IReward): Promise<void> {
+  async removeReward(uid: string, reward: IReward, userData: IUSerData): Promise<void> {
     try {
       const userRef = this.getUserRef(uid);
       const partnerId = this.partnerNameSubject.getValue();
-  
-      await updateDoc(userRef, {
-        [`partners.${partnerId}.rewards`]: arrayRemove(reward)
-      });
+      const partners = userData.partners || [];
+      const partnerIndex = partners.findIndex((p: any) => p.id === partnerId);
+
+      if (partnerIndex !== -1) {
+        const updatedPartners = [...partners];
+        const currentRewards = updatedPartners[partnerIndex].rewards || [];
+
+        const rewardIndex = currentRewards.findIndex((r: IReward) => r.name === reward.name);
+        if (rewardIndex !== -1) {
+          currentRewards.splice(rewardIndex, 1); // elimina solo uno
+          updatedPartners[partnerIndex] = {
+            ...updatedPartners[partnerIndex],
+            rewards: currentRewards
+          };
+
+          await updateDoc(userRef, {
+            partners: updatedPartners
+          });
+          this.snackService.open('Recompensa eliminada');
+        }
+      }
     } catch (error) {
       this.snackService.open('Error al eliminar recompensa');
     }
