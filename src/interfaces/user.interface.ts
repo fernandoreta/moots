@@ -22,9 +22,10 @@ export interface IPartner {
     background?: string;
     monthPromo?: string;
     reward?: string;
+    rewards?: IReward[];
 }
 
 export interface IPartnerData {
-    stamps: number;
+    createdAt: string;
     rewards: IReward[];
 }
